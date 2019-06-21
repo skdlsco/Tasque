@@ -1,5 +1,6 @@
 package com.marahoney.tasque.ui.form_edit
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.View
@@ -51,6 +52,7 @@ class FormDataListAdapter(private val viewModel: FormEditViewModel,
     }
 
     private fun onBindArticleViewHolder(holder: ArticleViewHolder, position: Int) {
+        holder.binding.pos = position
         holder.binding.item = getItem(position) as FormData.Article?
         holder.binding.vm = viewModel
 

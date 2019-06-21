@@ -2,6 +2,8 @@ package com.marahoney.tasque.di
 
 import com.marahoney.tasque.ui.f_category.CategoryFragmentUseCase
 import com.marahoney.tasque.ui.f_category.CategoryFragmentViewModel
+import com.marahoney.tasque.ui.f_form.FormFragmentUseCase
+import com.marahoney.tasque.ui.f_form.FormFragmentViewModel
 import com.marahoney.tasque.ui.form_edit.FormEditUseCase
 import com.marahoney.tasque.ui.form_edit.FormEditViewModel
 import com.marahoney.tasque.ui.main.MainUseCase
@@ -15,11 +17,11 @@ object ViewModelModules {
 
     val viewModelModule = module {
         viewModel { (useCase: MainUseCase) ->
-            MainViewModel(useCase)
+            MainViewModel(useCase, get())
         }
 
         viewModel { (useCase: SplashUseCase) ->
-            SplashViewModel(useCase)
+            SplashViewModel(useCase, get())
         }
 
         viewModel { (useCase: CategoryFragmentUseCase) ->
@@ -27,7 +29,11 @@ object ViewModelModules {
         }
 
         viewModel { (useCase: FormEditUseCase) ->
-            FormEditViewModel(useCase)
+            FormEditViewModel(useCase, get())
+        }
+
+        viewModel { (useCase: FormFragmentUseCase) ->
+            FormFragmentViewModel(useCase, get())
         }
     }
 }

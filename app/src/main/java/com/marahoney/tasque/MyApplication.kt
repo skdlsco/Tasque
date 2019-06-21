@@ -20,8 +20,9 @@ class MyApplication : Application() {
         startKoin {
             androidContext(this@MyApplication)
             modules(
-                ViewModelModules.viewModelModule,
-                Modules.apiModule
+                    ViewModelModules.viewModelModule,
+                    Modules.apiModule,
+                    Modules.dataModule
             )
         }
     }

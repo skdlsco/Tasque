@@ -39,6 +39,7 @@ class FormEditActivity : BaseActivity<ActivityFormEditBinding>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        viewModel.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
     }
 }

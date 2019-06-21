@@ -59,6 +59,7 @@
                     android:fontFamily="@font/notosans_cjk_kr_black"
                     android:hint="여러 구도의 카메라 구도"
                     android:includeFontPadding="false"
+                    android:onTextChanged="@{(text, start, before, count) -> vm.onTitleTextChanged(text)}"
                     android:paddingTop="16dp"
                     android:paddingBottom="16dp"
                     android:textColor="@color/textBlack"

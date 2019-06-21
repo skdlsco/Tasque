@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.marahoney.tasque.ui.f_category.CategoryFragment
+import com.marahoney.tasque.ui.f_form.FormFragment
 
 class MainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -14,6 +15,7 @@ class MainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_
     override fun getItem(position: Int): Fragment =
             when (position) {
                 0 -> CategoryFragment.newInstance()
+                1 -> FormFragment.newInstance()
                 else -> CategoryFragment.newInstance()
             }
 

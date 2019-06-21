@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.marahoney.tasque.R
 import com.marahoney.tasque.data.model.Category
-import com.marahoney.tasque.data.model.FormData
 import com.marahoney.tasque.databinding.ItemCategoryBinding
 import com.marahoney.tasque.ui.base.BaseViewHolder
+import com.marahoney.tasque.ui.f_form.FormFragmentViewModel
 
 class CategoryListAdapter(private val viewModel: CategoryFragmentViewModel) : ListAdapter<Category, CategoryListAdapter.ViewHolder>(Category.diffCallback) {
 
@@ -27,11 +27,12 @@ class CategoryListAdapter(private val viewModel: CategoryFragmentViewModel) : Li
     }
 
     fun getImage(pos: Int, imgNum: Int): String? {
-        if (getItem(pos).forms.size < imgNum)
-            return null
-        val formData = getItem(pos).forms[imgNum].data.firstOrNull { it is FormData.Image }
-                ?: return null
-        return (formData as FormData.Image).image
+//        if (getItem(pos).forms.size < imgNum)
+//            return null
+//        val formData = getItem(pos).forms[imgNum].data.firstOrNull { it is FormData.Image }
+//                ?: return null
+//        return (formData as FormData.Image).image
+        return ""
     }
 
     class ViewHolder(view: View) : BaseViewHolder<ItemCategoryBinding>(view)

@@ -1,6 +1,8 @@
 package com.marahoney.tasque.di
 
-import com.marahoney.tasque.data.NetworkApi
+import com.marahoney.tasque.data.local.DataRepository
+import com.marahoney.tasque.data.local.DataRepositoryImpl
+import com.marahoney.tasque.data.remote.NetworkApi
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -13,12 +15,15 @@ object Modules {
     val apiModule: Module = module {
         single {
             Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(baseUrl)
-                .build()
-                .create(NetworkApi::class.java)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(baseUrl)
+                    .build()
+                    .create(NetworkApi::class.java)
         }
+    }
 
+    val dataModule = module {
+        single { DataRepositoryImpl(get()) as DataRepository }
     }
 }

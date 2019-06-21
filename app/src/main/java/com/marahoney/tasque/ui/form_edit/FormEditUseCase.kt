@@ -2,18 +2,23 @@ package com.marahoney.tasque.ui.form_edit
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import java.io.File
 import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.marahoney.tasque.BuildConfig
+import com.marahoney.tasque.ui.main.MainActivity
+import org.jetbrains.anko.startActivity
+import java.io.File
 
 
 class FormEditUseCase(private val activity: AppCompatActivity,
                       private val recyclerView: RecyclerView) {
 
     val intent: Intent get() = activity.intent
+
+    fun notifyRecyclerViewItemAdd(pos: Int) {
+        recyclerView.adapter?.notifyItemInserted(pos)
+    }
 
     fun notifyRecyclerView() {
         recyclerView.adapter?.notifyDataSetChanged()
@@ -41,5 +46,13 @@ class FormEditUseCase(private val activity: AppCompatActivity,
         intent.setDataAndType(uri, "image/png")
         intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         activity.startActivity(intent)
+    }
+
+    fun startMainActivity() {
+        activity.startActivity<MainActivity>()
+    }
+
+    fun finishActivity() {
+        activity.finish()
     }
 }
