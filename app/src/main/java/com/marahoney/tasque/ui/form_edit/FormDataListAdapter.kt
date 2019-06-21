@@ -1,6 +1,5 @@
 package com.marahoney.tasque.ui.form_edit
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.marahoney.tasque.R
 import com.marahoney.tasque.data.model.FormData
 import com.marahoney.tasque.databinding.ItemFormArticleBinding
@@ -44,6 +44,10 @@ class FormDataListAdapter(private val viewModel: FormEditViewModel,
     private fun onBindImageViewHolder(holder: ImageViewHolder, position: Int) {
         holder.binding.item = getItem(position) as FormData.Image?
         holder.binding.vm = viewModel
+
+        Glide.with(holder.binding.image)
+                .load(holder.binding.item?.image)
+                .into(holder.binding.image)
 
         holder.binding.button.onTouch { v, event ->
             if (event.action == ACTION_DOWN)

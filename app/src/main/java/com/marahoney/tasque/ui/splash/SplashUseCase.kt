@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.marahoney.tasque.ui.form_edit.FormEditActivity
 import com.marahoney.tasque.ui.main.MainActivity
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class SplashUseCase(private val activity: AppCompatActivity) {
 
@@ -14,11 +15,15 @@ class SplashUseCase(private val activity: AppCompatActivity) {
         activity.startActivity<MainActivity>()
     }
 
+    fun startFormEditActivity(pkgName: String, fileName: String, images: Array<String>, text: String) {
+        activity.startActivity<FormEditActivity>("packageName" to pkgName, "filePath" to fileName, "image" to images, "text" to text)
+    }
+
     fun finish() {
         activity.finish()
     }
 
-    fun startFormEditActivity(pkgName: String, fileName: String) {
-        activity.startActivity<FormEditActivity>("packageName" to pkgName, "filePath" to fileName)
+    fun showToast(s: String) {
+        activity.toast(s)
     }
 }

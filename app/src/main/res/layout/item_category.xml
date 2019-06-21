@@ -38,7 +38,7 @@
             app:layout_constraintEnd_toEndOf="@id/frame"
             app:layout_constraintStart_toStartOf="@id/frame"
             app:layout_constraintTop_toTopOf="@id/frame"
-            app:radius="8dp">
+            app:radius="16dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

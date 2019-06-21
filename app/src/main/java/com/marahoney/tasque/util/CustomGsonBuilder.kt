@@ -34,7 +34,8 @@ object CustomGsonBuilder {
             }
         })
 
-        builder.registerTypeAdapter(object : TypeToken<FormData>() {}.type, JsonSerializer<FormData>() { src: FormData?, typeOfSrc: Type?, context: JsonSerializationContext? ->
+        builder.registerTypeAdapter(object : TypeToken<FormData>() {}.type, JsonSerializer<FormData>
+        { src: FormData?, typeOfSrc: Type?, context: JsonSerializationContext? ->
             val jo = JsonObject()
             jo.addProperty("mode", src?.mode)
             if (src is FormData.Article) {

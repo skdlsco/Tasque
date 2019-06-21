@@ -40,6 +40,16 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
 
     init {
         _applicationName.value = useCase.getApplicationNameFromPackageName(packageName)
+        if (useCase.intent.hasExtra("image")) {
+            val images = useCase.intent.getStringArrayExtra("image")
+            images.forEach {
+                _formDataArray.value?.add(FormData.Image("http://prometasv.com$it"))
+            }
+        }
+        if (useCase.intent.hasExtra("text")) {
+            _formDataArray.value?.add(FormData.Article(useCase.intent.getStringExtra("text")))
+        }
+        _formDataArray.value = _formDataArray.value?.apply { }
     }
 
     fun onTitleTextChanged(text: CharSequence) {

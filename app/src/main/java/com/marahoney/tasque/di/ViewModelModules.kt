@@ -21,7 +21,7 @@ object ViewModelModules {
         }
 
         viewModel { (useCase: SplashUseCase) ->
-            SplashViewModel(useCase, get())
+            SplashViewModel(useCase, get(), get())
         }
 
         viewModel { (useCase: CategoryFragmentUseCase) ->
