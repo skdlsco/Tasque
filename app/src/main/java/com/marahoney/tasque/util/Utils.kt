@@ -3,9 +3,12 @@ package com.marahoney.tasque.util
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import org.jetbrains.anko.displayMetrics
 import java.util.*
 
 object Utils {
+
+    fun makeDP(context: Context, dp: Float): Float = context.displayMetrics.density * dp
 
     fun getAppNameFromPkgName(context: Context, packageName: String): String {
 

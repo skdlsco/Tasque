@@ -39,7 +39,7 @@
             app:layout_constraintEnd_toEndOf="@id/frame"
             app:layout_constraintStart_toStartOf="@id/frame"
             app:layout_constraintTop_toTopOf="@id/frame"
-            app:radius="8dp">
+            app:radius="16dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -57,7 +57,9 @@
                     app:layout_constraintBottom_toTopOf="@id/image3"
                     app:layout_constraintEnd_toStartOf="@id/image2"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginBottom="0dp"
+                    app:layout_goneMarginEnd="0dp" />
 
                 <ImageView
                     android:id="@+id/image2"
@@ -69,7 +71,9 @@
                     app:layout_constraintBottom_toTopOf="@id/image4"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/image1"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginBottom="0dp"
+                    app:layout_goneMarginStart="0dp" />
 
                 <ImageView
                     android:id="@+id/image3"
@@ -81,7 +85,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/image4"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image1" />
+                    app:layout_constraintTop_toBottomOf="@id/image1"
+                    app:layout_goneMarginEnd="0dp"
+                    app:layout_goneMarginTop="0dp" />
 
                 <ImageView
                     android:id="@+id/image4"
@@ -93,7 +99,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/image3"
-                    app:layout_constraintTop_toBottomOf="@id/image2" />
+                    app:layout_constraintTop_toBottomOf="@id/image2"
+                    app:layout_goneMarginStart="0dp"
+                    app:layout_goneMarginTop="0dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.eka.roundlayout.RoundLayout>
 

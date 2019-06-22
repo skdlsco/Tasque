@@ -28,37 +28,40 @@ class FormListAdapter(private val viewModel: FormFragmentViewModel) : ListAdapte
         holder.binding.info.text = makeInfo(item)
         holder.binding.date.text = simpleDateFormat.format(item.createAt)
 
-        when (item.data?.count { it.mode == "image" } ?: 0) {
-            in 0..1 -> {
-                holder.binding.image2.visibility = View.GONE
-                holder.binding.image3.visibility = View.GONE
-                holder.binding.image4.visibility = View.GONE
-            }
-            2 -> {
-                holder.binding.image3.visibility = View.GONE
-                holder.binding.image4.visibility = View.GONE
-            }
-            3 -> {
-                holder.binding.image4.visibility = View.GONE
-            }
-        }
-        if (item.data?.count { it.mode == "image" } == 0) {
-            Glide.with(holder.binding.image1)
-                    .load(item.screenshot)
-                    .into(holder.binding.image1)
-        } else {
-            item.data?.filter { it.mode == "image" }?.forEachIndexed { index, formData ->
-                val url = (formData as FormData.Image).image
-                val view = when (index) {
-                    0 -> holder.binding.image1
-                    1 -> holder.binding.image2
-                    2 -> holder.binding.image3
-                    3 -> holder.binding.image4
-                    else -> holder.binding.image1
+        val imageCount = item.data?.count { it.mode == "image" } ?: 0
+        holder.binding.run {
+            when (imageCount) {
+                in 0..1 -> {
+                    image2.visibility = View.GONE
+                    image3.visibility = View.GONE
+                    image4.visibility = View.GONE
                 }
-                Glide.with(view)
-                        .load(url)
-                        .into(view)
+                2 -> {
+                    image3.visibility = View.GONE
+                    image4.visibility = View.GONE
+                }
+                3 -> {
+                    image4.visibility = View.GONE
+                }
+            }
+            if (imageCount == 0) {
+                Glide.with(image1)
+                        .load(item.screenshot)
+                        .into(image1)
+            } else {
+                item.data?.filter { it.mode == "image" }?.forEachIndexed { index, formData ->
+                    val url = (formData as FormData.Image).image
+                    val view = when (index) {
+                        0 -> image1
+                        1 -> image2
+                        2 -> image3
+                        3 -> image4
+                        else -> image1
+                    }
+                    Glide.with(view)
+                            .load(url)
+                            .into(view)
+                }
             }
         }
     }
