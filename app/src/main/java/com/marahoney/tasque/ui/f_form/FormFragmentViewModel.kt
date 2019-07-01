@@ -1,6 +1,7 @@
 package com.marahoney.tasque.ui.f_form
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.marahoney.tasque.data.local.DataRepository
 import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.ui.base.BaseViewModel
@@ -10,11 +11,24 @@ class FormFragmentViewModel(private val useCase: FormFragmentUseCase,
 
     val forms: LiveData<ArrayList<Form>> get() = dataRepository.forms
 
-    init {
+    private val formObserver = Observer<ArrayList<Form>> {
+        useCase.notifyRecyclerView()
+    }
 
+    init {
+        forms.observeForever(formObserver)
+    }
+
+    fun onClickForm(form: Form, pos: Int) {
+        useCase.startFormDetailActivity(form.token)
     }
 
     fun getApplicationNameFromPackageName(packageName: String): String {
         return useCase.getApplicationNameFromPackageName(packageName)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        forms.removeObserver(formObserver)
     }
 }

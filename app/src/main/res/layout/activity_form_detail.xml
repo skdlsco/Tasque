@@ -7,22 +7,19 @@
 
         <variable
             name="vm"
-            type="com.marahoney.tasque.ui.form_edit.FormEditViewModel" />
+            type="com.marahoney.tasque.ui.form_detail.FormDetailViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.form_edit.FormEditActivity">
+        tools:context=".ui.form_detail.FormDetailActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -33,7 +30,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/categoryButton"
+                    android:id="@+id/categoryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
@@ -41,14 +38,14 @@
                     android:layout_marginEnd="@dimen/default_margin"
                     android:fontFamily="@font/notosans_cjk_kr_medium"
                     android:singleLine="true"
-                    android:text="카테고리 지정하기"
+                    android:text="카테고리 지정 안됨"
                     android:textColor="@color/textBlack"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:underLine="@{true}" />
 
-                <EditText
+                <TextView
                     android:id="@+id/formTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,25 +54,53 @@
                     android:layout_marginEnd="@dimen/default_margin"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/notosans_cjk_kr_black"
-                    android:hint="여러 구도의 카메라 구도"
                     android:includeFontPadding="false"
-                    android:onTextChanged="@{(text, start, before, count) -> vm.onTitleTextChanged(text)}"
                     android:paddingTop="16dp"
                     android:paddingBottom="16dp"
-                    android:text="@{vm.title}"
+                    android:text="@{vm.form.title}"
                     android:textColor="@color/textBlack"
-                    android:textColorHint="@color/textGrey"
-                    android:textSize="24sp"
-                    app:layout_constraintTop_toTopOf="@id/categoryButton" />
+                    android:textSize="24dp"
+                    app:layout_constraintTop_toTopOf="@id/categoryText"
+                    tools:text="제목이다" />
+
+                <TextView
+                    android:id="@+id/info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="46dp"
+                    android:fontFamily="@font/notosans_cjk_kr_regular"
+                    android:text="@{vm.form.info}"
+                    android:textColor="@color/textGrey"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/formTitle"
+                    tools:text="글자 수 5,392자" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="22dp"
+                    android:fontFamily="@font/notosans_cjk_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="@{vm.form.createText}"
+                    android:textColor="@color/textBlack"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/info"
+                    tools:text="2019.06.13(목)에 생성됨." />
 
                 <ImageView
                     android:id="@+id/badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="12dp"
                     android:src="@drawable/app_badge"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/formTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/date" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -126,38 +151,17 @@
                         android:tint="@android:color/white" />
                 </LinearLayout>
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/goScreenShotButton">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:callback="@{vm.callback}"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:listItem="@{vm.formDataArray}"
-                        app:viewModel="@{vm}" />
-
-                    <TextView
-                        android:id="@+id/addButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:fontFamily="@font/notosans_cjk_kr_medium"
-                        android:onClick="@{() -> vm.onClickAddButton()}"
-                        android:paddingTop="24dp"
-                        android:paddingBottom="24dp"
-                        android:text="더 추가할 내용이 있다면 이 곳을 터치하세요"
-                        android:textColor="@color/textGrey"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                    app:layout_constraintTop_toBottomOf="@id/goScreenShotButton"
+                    app:listItem="@{vm.form.data}"
+                    app:viewModel="@{vm}" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

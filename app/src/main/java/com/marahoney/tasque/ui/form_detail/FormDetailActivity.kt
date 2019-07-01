@@ -1,20 +1,21 @@
-package com.marahoney.tasque.ui.form_edit
+package com.marahoney.tasque.ui.form_detail
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.marahoney.tasque.R
-import com.marahoney.tasque.databinding.ActivityFormEditBinding
+import com.marahoney.tasque.databinding.ActivityFormDetailBinding
 import com.marahoney.tasque.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_form_edit.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class FormEditActivity : BaseActivity<ActivityFormEditBinding>() {
+class FormDetailActivity : BaseActivity<ActivityFormDetailBinding>() {
 
-    override val layoutResourceId: Int = R.layout.activity_form_edit
-    private val useCase by lazy { FormEditUseCase(this, recyclerView) }
-    private val viewModel by viewModel<FormEditViewModel> { parametersOf(useCase) }
+    override val layoutResourceId: Int = R.layout.activity_form_detail
+
+    private val useCase by lazy { FormDetailUseCase(this) }
+    private val viewModel by viewModel<FormDetailViewModel> { parametersOf(useCase) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,21 +35,16 @@ class FormEditActivity : BaseActivity<ActivityFormEditBinding>() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.form_edit, menu)
+        menuInflater.inflate(R.menu.form_detail, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         viewModel.onOptionsItemSelected(item)
-        return super.onOptionsItemSelected(item)
+        return super.onContextItemSelected(item)
     }
 
     companion object {
-        const val MODE_CREATE = 1
-        const val MODE_EDIT = 2
-        const val KEY_MODE = "mode"
         const val KEY_FORM_TOKEN = "formToken"
-        const val KEY_PACKAGE_NAME = "packageName"
-        const val KEY_FILE_PATH = "filePath"
     }
 }

@@ -18,6 +18,7 @@ import com.marahoney.tasque.ui.f_category.CategoryFragmentViewModel
 import com.marahoney.tasque.ui.f_category.CategoryListAdapter
 import com.marahoney.tasque.ui.f_form.FormFragmentViewModel
 import com.marahoney.tasque.ui.f_form.FormListAdapter
+import com.marahoney.tasque.ui.form_detail.FormDetailViewModel
 import com.marahoney.tasque.ui.form_edit.FormDataItemTouchHelperCallback
 import com.marahoney.tasque.ui.form_edit.FormDataListAdapter
 import com.marahoney.tasque.ui.form_edit.FormEditViewModel
@@ -111,6 +112,23 @@ object BindAdapter {
             if (this is FormListAdapter) this.submitList(items)
         } ?: run {
             FormListAdapter(viewModel).run {
+                view.adapter = this
+                this.submitList(items)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter(value = ["listItem", "viewModel"])
+    fun setItems(view: RecyclerView, items: List<FormData>, viewModel: FormDetailViewModel) {
+
+        if (view.layoutManager == null) {
+            view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        }
+        view.adapter?.run {
+            if (this is com.marahoney.tasque.ui.form_detail.FormDataListAdapter) this.submitList(items)
+        } ?: run {
+            com.marahoney.tasque.ui.form_detail.FormDataListAdapter(viewModel).run {
                 view.adapter = this
                 this.submitList(items)
             }

@@ -29,17 +29,24 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
         val json = gson.toJson(form)
         formEdit.putString(form.token, json)
         formEdit.commit()
+        _forms.add(form)
     }
 
     override fun updateForm(form: Form) {
         val json = gson.toJson(form)
         formEdit.putString(form.token, json)
         formEdit.commit()
+        val i = _forms.value?.indexOfFirst { it.token == form.token } ?: -1
+        if (i != -1)
+            _forms.value?.set(i, form)
+        _forms.notifyDataChanged()
     }
 
     override fun removeForm(form: Form) {
         formEdit.remove(form.token)
         formEdit.commit()
+        _forms.remove(form)
+        _forms.notifyDataChanged()
     }
 
     override fun insertCategory(category: Category) {

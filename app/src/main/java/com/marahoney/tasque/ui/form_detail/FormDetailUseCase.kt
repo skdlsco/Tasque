@@ -1,32 +1,17 @@
-package com.marahoney.tasque.ui.form_edit
+package com.marahoney.tasque.ui.form_detail
 
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.marahoney.tasque.BuildConfig
-import com.marahoney.tasque.ui.main.MainActivity
+import com.marahoney.tasque.ui.form_edit.FormEditActivity
+import org.jetbrains.anko.startActivity
 import java.io.File
 
-
-class FormEditUseCase(private val activity: AppCompatActivity,
-                      private val recyclerView: RecyclerView) {
+class FormDetailUseCase(private val activity: AppCompatActivity) {
 
     val intent: Intent get() = activity.intent
-
-    fun notifyRecyclerViewItemAdd(pos: Int) {
-        recyclerView.adapter?.notifyItemInserted(pos)
-    }
-
-    fun notifyRecyclerView() {
-        recyclerView.adapter?.notifyDataSetChanged()
-    }
-
-    fun notifyRecyclerView(from: Int, to: Int) {
-        recyclerView.adapter?.notifyItemMoved(from, to)
-    }
 
     fun getApplicationNameFromPackageName(packageName: String): String {
         try {
@@ -48,14 +33,12 @@ class FormEditUseCase(private val activity: AppCompatActivity,
         activity.startActivity(intent)
     }
 
-    fun startMainActivity() {
-        val intent = Intent(activity, MainActivity::class.java).apply {
-            addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT)
-        }
-        activity.startActivity(intent)
-    }
-
     fun finishActivity() {
         activity.finish()
+    }
+
+    fun startEditActivity(token: String) {
+        activity.startActivity<FormEditActivity>(FormEditActivity.KEY_FORM_TOKEN to token,
+                FormEditActivity.KEY_MODE to FormEditActivity.MODE_EDIT)
     }
 }

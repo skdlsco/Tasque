@@ -3,8 +3,8 @@ package com.marahoney.tasque.ui.splash
 import com.marahoney.tasque.data.local.DataRepository
 import com.marahoney.tasque.data.remote.NetworkRepository
 import com.marahoney.tasque.ui.base.BaseViewModel
+import com.marahoney.tasque.ui.form_edit.FormEditActivity
 import com.marahoney.tasque.ui.splash.SplashActivity.Companion.KEY_FILE_PATH
-import com.marahoney.tasque.ui.splash.SplashActivity.Companion.KEY_PACKAGE_NAME
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
@@ -32,7 +32,7 @@ class SplashViewModel(private val useCase: SplashUseCase,
 //            useCase.finish()
         } else
             Thread {
-                Thread.sleep(2000)
+                Thread.sleep(1000)
                 useCase.startMainActivity()
                 useCase.finish()
             }.start()
@@ -49,13 +49,16 @@ class SplashViewModel(private val useCase: SplashUseCase,
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
-                    val packageName = useCase.intent.getStringExtra(KEY_PACKAGE_NAME)
-                    val filePath = useCase.intent.getStringExtra(KEY_FILE_PATH)
+                    val packageName = useCase.intent.getStringExtra(FormEditActivity.KEY_PACKAGE_NAME)
+                    val filePath = useCase.intent.getStringExtra(FormEditActivity.KEY_FILE_PATH)
                     useCase.startFormEditActivity(packageName, filePath, it.images.toTypedArray(), it.text)
+                    useCase.finish()
                 }, {
                     it.printStackTrace()
                     useCase.showToast("서버 에러 발생")
+                    val packageName = useCase.intent.getStringExtra(FormEditActivity.KEY_PACKAGE_NAME)
+                    val filePath = useCase.intent.getStringExtra(FormEditActivity.KEY_FILE_PATH)
+                    useCase.startFormEditActivity(packageName, filePath, arrayOf(), "")
                     useCase.finish()
                 })
                 .also { addDisposable(it) }

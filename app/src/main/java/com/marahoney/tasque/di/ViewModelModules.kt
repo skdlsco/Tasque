@@ -4,6 +4,8 @@ import com.marahoney.tasque.ui.f_category.CategoryFragmentUseCase
 import com.marahoney.tasque.ui.f_category.CategoryFragmentViewModel
 import com.marahoney.tasque.ui.f_form.FormFragmentUseCase
 import com.marahoney.tasque.ui.f_form.FormFragmentViewModel
+import com.marahoney.tasque.ui.form_detail.FormDetailUseCase
+import com.marahoney.tasque.ui.form_detail.FormDetailViewModel
 import com.marahoney.tasque.ui.form_edit.FormEditUseCase
 import com.marahoney.tasque.ui.form_edit.FormEditViewModel
 import com.marahoney.tasque.ui.main.MainUseCase
@@ -34,6 +36,10 @@ object ViewModelModules {
 
         viewModel { (useCase: FormFragmentUseCase) ->
             FormFragmentViewModel(useCase, get())
+        }
+
+        viewModel { (useCase: FormDetailUseCase) ->
+            FormDetailViewModel(useCase, get())
         }
     }
 }

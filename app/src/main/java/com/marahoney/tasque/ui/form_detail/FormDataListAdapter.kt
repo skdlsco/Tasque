@@ -1,22 +1,18 @@
-package com.marahoney.tasque.ui.form_edit
+package com.marahoney.tasque.ui.form_detail
 
 import android.view.LayoutInflater
-import android.view.MotionEvent.ACTION_DOWN
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.marahoney.tasque.R
 import com.marahoney.tasque.data.model.FormData
-import com.marahoney.tasque.databinding.ItemFormEditArticleBinding
-import com.marahoney.tasque.databinding.ItemFormEditImageBinding
+import com.marahoney.tasque.databinding.ItemFormDetailArticleBinding
+import com.marahoney.tasque.databinding.ItemFormDetailImageBinding
 import com.marahoney.tasque.ui.base.BaseViewHolder
-import org.jetbrains.anko.sdk27.coroutines.onTouch
 
-class FormDataListAdapter(private val viewModel: FormEditViewModel,
-                          private val itemTouchHelper: ItemTouchHelper) : ListAdapter<FormData, RecyclerView.ViewHolder>(FormData.diffCallback) {
+class FormDataListAdapter(private val viewModel: FormDetailViewModel) : ListAdapter<FormData, RecyclerView.ViewHolder>(FormData.diffCallback) {
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -28,9 +24,9 @@ class FormDataListAdapter(private val viewModel: FormEditViewModel,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            VIEW_TYPE_IMAGE -> ImageViewHolder(inflater.inflate(R.layout.item_form_edit_image, parent, false))
-            VIEW_TYPE_ARTICLE -> ArticleViewHolder(inflater.inflate(R.layout.item_form_edit_article, parent, false))
-            else -> ArticleViewHolder(inflater.inflate(R.layout.item_form_edit_article, parent, false))
+            VIEW_TYPE_IMAGE -> ImageViewHolder(inflater.inflate(R.layout.item_form_detail_image, parent, false))
+            VIEW_TYPE_ARTICLE -> ArticleViewHolder(inflater.inflate(R.layout.item_form_detail_article, parent, false))
+            else -> ArticleViewHolder(inflater.inflate(R.layout.item_form_detail_article, parent, false))
         }
     }
 
@@ -48,26 +44,15 @@ class FormDataListAdapter(private val viewModel: FormEditViewModel,
         Glide.with(holder.binding.image)
                 .load(holder.binding.item?.image)
                 .into(holder.binding.image)
-
-        holder.binding.button.onTouch { v, event ->
-            if (event.action == ACTION_DOWN)
-                itemTouchHelper.startDrag(holder)
-        }
     }
 
     private fun onBindArticleViewHolder(holder: ArticleViewHolder, position: Int) {
-        holder.binding.pos = position
         holder.binding.item = getItem(position) as FormData.Article?
         holder.binding.vm = viewModel
-
-        holder.binding.button.onTouch { v, event ->
-            if (event.action == ACTION_DOWN)
-                itemTouchHelper.startDrag(holder)
-        }
     }
 
-    class ImageViewHolder(view: View) : BaseViewHolder<ItemFormEditImageBinding>(view)
-    class ArticleViewHolder(view: View) : BaseViewHolder<ItemFormEditArticleBinding>(view)
+    class ImageViewHolder(view: View) : BaseViewHolder<ItemFormDetailImageBinding>(view)
+    class ArticleViewHolder(view: View) : BaseViewHolder<ItemFormDetailArticleBinding>(view)
 
     companion object {
         const val VIEW_TYPE_IMAGE = 1

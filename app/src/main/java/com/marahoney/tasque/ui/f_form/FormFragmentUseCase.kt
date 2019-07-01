@@ -2,8 +2,12 @@ package com.marahoney.tasque.ui.f_form
 
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.marahoney.tasque.ui.form_detail.FormDetailActivity
+import org.jetbrains.anko.support.v4.startActivity
 
-class FormFragmentUseCase(private val fragment: Fragment) {
+class FormFragmentUseCase(private val fragment: Fragment,
+                          private val recyclerView: RecyclerView) {
 
     fun getApplicationNameFromPackageName(packageName: String): String {
 
@@ -17,5 +21,13 @@ class FormFragmentUseCase(private val fragment: Fragment) {
         }
 
         return ""
+    }
+
+    fun startFormDetailActivity(token: String) {
+        fragment.startActivity<FormDetailActivity>(FormDetailActivity.KEY_FORM_TOKEN to token)
+    }
+
+    fun notifyRecyclerView() {
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 }
