@@ -22,6 +22,8 @@ data class Form(
         @SerializedName("link")
         val link: String? = null) : Serializable {
 
+    val isWeb: Boolean get() = link != null
+
     val info: String
         get() {
             val result = StringBuilder()

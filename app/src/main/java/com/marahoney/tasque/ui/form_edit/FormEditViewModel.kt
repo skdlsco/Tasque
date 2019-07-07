@@ -1,5 +1,6 @@
 package com.marahoney.tasque.ui.form_edit
 
+import android.util.Log
 import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,13 +25,16 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
     private val _applicationName = MutableLiveData<String>("")
     private val _formDataArray = MutableLiveData<ArrayList<FormData>>(arrayListOf())
     private val _title = MutableLiveData<String>("")
+    private val _isWeb = MutableLiveData<Boolean>(false)
 
     val applicationName: LiveData<String> get() = _applicationName
     val formDataArray: LiveData<ArrayList<FormData>> get() = _formDataArray
     val title: LiveData<String> get() = _title
+    val isWeb: LiveData<Boolean> get() = _isWeb
 
     private lateinit var packageName: String
     private lateinit var filePath: String
+    var link: String?= null
 
     // mode 비교해서 form 데이터값 설정하기
     private val mode: Int = useCase.intent.getIntExtra(KEY_MODE, MODE_CREATE)
@@ -44,24 +48,27 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
 
     init {
         if (mode == MODE_CREATE)
-            initDateCreate()
+            initDataCreate()
         else if (mode == MODE_EDIT)
-            initDateEdit()
+            initDataEdit()
 
         _applicationName.value = useCase.getApplicationNameFromPackageName(packageName)
         _formDataArray.value = _formDataArray.value?.apply { }
     }
 
-    private fun initDateEdit() {
+    private fun initDataEdit() {
         val token = useCase.intent.getStringExtra(KEY_FORM_TOKEN)
         val form = dataRepository.forms.value?.find { it.token == token } ?: return // TODO: 오류
         packageName = form.capturedPackage
         filePath = form.screenshot
         _title.value = form.title
         _formDataArray.value?.addAll(form.data ?: arrayListOf())
+
+        _isWeb.value = form.isWeb
+        link = form.link ?: ""
     }
 
-    private fun initDateCreate() {
+    private fun initDataCreate() {
         packageName = useCase.intent.getStringExtra(KEY_PACKAGE_NAME)
                 ?: ""
         filePath = useCase.intent.getStringExtra(KEY_FILE_PATH)
@@ -73,6 +80,11 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
         }
         if (useCase.intent.hasExtra("text")) {
             _formDataArray.value?.add(FormData.Article(useCase.intent.getStringExtra("text")))
+        }
+
+        if (useCase.intent.hasExtra("link")) {
+            _isWeb.value = true
+            link = useCase.intent.getStringExtra("link")
         }
     }
 
@@ -107,7 +119,7 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
                 Date(),
                 packageName,
                 _formDataArray.value!!.toList(),
-                null
+                link
         )
         dataRepository.insertForm(form)
 

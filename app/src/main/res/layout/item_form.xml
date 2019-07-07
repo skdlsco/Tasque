@@ -150,9 +150,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:src="@drawable/app_badge"
+            android:src="@{item.isWeb ? @drawable/web_badge: @drawable/app_badge}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date" />
+            app:layout_constraintTop_toBottomOf="@id/date"
+            tools:src="@drawable/app_badge" />
 
         <TextView
             android:layout_width="0dp"
@@ -160,7 +161,7 @@
             android:layout_marginStart="8dp"
             android:fontFamily="@font/notosans_cjk_kr_regular"
             android:singleLine="true"
-            android:text="@{vm.getApplicationNameFromPackageName(item.capturedPackage) +` (으)로 열기`}"
+            android:text="@{item.isWeb ? item.link + ` 열기` : vm.getApplicationNameFromPackageName(item.capturedPackage) +` (으)로 열기`}"
             android:textColor="@color/softBlue"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@id/badge"

@@ -15,8 +15,21 @@ class SplashUseCase(private val activity: AppCompatActivity) {
         activity.startActivity<MainActivity>()
     }
 
+    fun startFormEditActivity(pkgName: String, fileName: String) {
+        activity.startActivity<FormEditActivity>("packageName" to pkgName, "filePath" to fileName)
+    }
+
+    fun startFormEditActivity(pkgName: String, fileName: String, link: String) {
+        activity.startActivity<FormEditActivity>("packageName" to pkgName, "filePath" to fileName, "link" to link)
+    }
+
     fun startFormEditActivity(pkgName: String, fileName: String, images: Array<String>, text: String) {
         activity.startActivity<FormEditActivity>("packageName" to pkgName, "filePath" to fileName, "image" to images, "text" to text)
+    }
+
+    fun startFormEditActivity(pkgName: String, fileName: String, images: Array<String>, text: String, link: String) {
+        activity.startActivity<FormEditActivity>("packageName" to pkgName,
+                "filePath" to fileName, "image" to images, "text" to text, "link" to link)
     }
 
     fun finish() {

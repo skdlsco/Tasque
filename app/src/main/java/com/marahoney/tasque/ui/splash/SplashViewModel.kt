@@ -5,6 +5,7 @@ import com.marahoney.tasque.data.remote.NetworkRepository
 import com.marahoney.tasque.ui.base.BaseViewModel
 import com.marahoney.tasque.ui.form_edit.FormEditActivity
 import com.marahoney.tasque.ui.splash.SplashActivity.Companion.KEY_FILE_PATH
+import com.marahoney.tasque.ui.splash.SplashActivity.Companion.KEY_WEB_LINK
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
@@ -26,10 +27,7 @@ class SplashViewModel(private val useCase: SplashUseCase,
             dataRepository.loadData()
 
         if (mode) {
-
             postPicture()
-//            useCase.startFormEditActivity(packageName, filePath)
-//            useCase.finish()
         } else
             Thread {
                 Thread.sleep(1000)
@@ -45,20 +43,30 @@ class SplashViewModel(private val useCase: SplashUseCase,
         val body = RequestBody.create(MediaType.parse("image/*"), screenshot)
         val part = MultipartBody.Part.createFormData("image", screenshot.name, body)
 
+        val link = useCase.intent.getStringExtra(KEY_WEB_LINK) ?: ""
+
         networkRepository.postPicture(part)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val packageName = useCase.intent.getStringExtra(FormEditActivity.KEY_PACKAGE_NAME)
                     val filePath = useCase.intent.getStringExtra(FormEditActivity.KEY_FILE_PATH)
-                    useCase.startFormEditActivity(packageName, filePath, it.images.toTypedArray(), it.text)
+                    if (link.isNotBlank())
+                        useCase.startFormEditActivity(packageName, filePath, it.images.toTypedArray(), it.text, link)
+                    else
+                        useCase.startFormEditActivity(packageName, filePath, it.images.toTypedArray(), it.text)
+
                     useCase.finish()
                 }, {
                     it.printStackTrace()
                     useCase.showToast("서버 에러 발생")
                     val packageName = useCase.intent.getStringExtra(FormEditActivity.KEY_PACKAGE_NAME)
                     val filePath = useCase.intent.getStringExtra(FormEditActivity.KEY_FILE_PATH)
-                    useCase.startFormEditActivity(packageName, filePath, arrayOf(), "")
+                    if (link.isNotBlank())
+                        useCase.startFormEditActivity(packageName, filePath, link)
+                    else
+                        useCase.startFormEditActivity(packageName, filePath)
+
                     useCase.finish()
                 })
                 .also { addDisposable(it) }

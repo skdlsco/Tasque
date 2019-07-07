@@ -31,6 +31,7 @@ class MyService : Service() {
     val windowManager by lazy { getSystemService(Context.WINDOW_SERVICE) as WindowManager }
     var view: View? = null
     var screenCapture: ScreenCapture? = null
+    val pref by lazy { getSharedPreferences("webInfo", Context.MODE_PRIVATE) }
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -72,34 +73,11 @@ class MyService : Service() {
         val swipeTouchListener = object : OnSwipeTouchListener(this@MyService) {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                screenCapture?.capture {
-                    var topPackageName: String = ""
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        val mUsageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-                        val time = System.currentTimeMillis()
-                        // We get usage stats for the last 10 seconds
-                        val stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 10, time)
-                        // Sort the stats by the last time used
-                        if (stats != null) {
-                            val mySortedMap = TreeMap<Long, UsageStats>()
-                            for (usageStats in stats) {
-                                mySortedMap[usageStats.lastTimeUsed] = usageStats
-                            }
-                            if (!mySortedMap.isEmpty()) {
-                                topPackageName = mySortedMap.get(mySortedMap.lastKey())?.packageName
-                                        ?: ""
-                            }
-                        }
-                    }
-                    Log.e("asdf", "yee ${topPackageName}")
-                    val intent = Intent(applicationContext, SplashActivity::class.java).apply {
-                        putExtra("mode", SplashActivity.MODE_CREATE_FORM)
-                        putExtra(SplashActivity.KEY_FILE_PATH, it)
-                        putExtra(SplashActivity.KEY_PACKAGE_NAME, topPackageName)
-                        setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                    applicationContext.startActivity(intent)
-                }
+                val topPackageName: String = getTopPackageName()
+                if (topPackageName == "com.android.chrome" || topPackageName == "com.sec.android.app.sbrowser")
+                    fromWeb(topPackageName)
+                else
+                    fromApp(topPackageName)
             }
         }
 
@@ -112,6 +90,51 @@ class MyService : Service() {
         }
 
         return START_STICKY
+    }
+
+    fun fromWeb(packageName: String) {
+        val webUrl = pref.getString("web_url", "")!!
+        Log.e("Asdf", "success ${webUrl}")
+        screenCapture?.capture {
+            val intent = Intent(applicationContext, SplashActivity::class.java).apply {
+                putExtra("mode", SplashActivity.MODE_CREATE_FORM)
+                putExtra(SplashActivity.KEY_FILE_PATH, it)
+                putExtra(SplashActivity.KEY_PACKAGE_NAME, packageName)
+                putExtra(SplashActivity.KEY_WEB_LINK, webUrl)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            applicationContext.startActivity(intent)
+        }
+    }
+
+    fun fromApp(packageName: String) {
+        screenCapture?.capture {
+            val intent = Intent(applicationContext, SplashActivity::class.java).apply {
+                putExtra("mode", SplashActivity.MODE_CREATE_FORM)
+                putExtra(SplashActivity.KEY_FILE_PATH, it)
+                putExtra(SplashActivity.KEY_PACKAGE_NAME, packageName)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            applicationContext.startActivity(intent)
+        }
+    }
+
+    fun getTopPackageName(): String {
+        var topPackageName: String = ""
+        val time = System.currentTimeMillis()
+        val mUsageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 10, time)
+        if (stats != null) {
+            val mySortedMap = TreeMap<Long, UsageStats>()
+            for (usageStats in stats) {
+                mySortedMap[usageStats.lastTimeUsed] = usageStats
+            }
+            if (!mySortedMap.isEmpty()) {
+                topPackageName = mySortedMap.get(mySortedMap.lastKey())?.packageName
+                        ?: ""
+            }
+        }
+        return topPackageName
     }
 
     fun makeDP(context: Context, dp: Float): Float = context.displayMetrics.density * dp
@@ -138,13 +161,12 @@ class MyService : Service() {
         } else {
             builder = NotificationCompat.Builder(this)
         }
-        builder.setSmallIcon(com.marahoney.tasque.R.mipmap.ic_launcher)
+        builder.setSmallIcon(R.mipmap.ic_launcher)
                 .setContent(remoteViews)
                 .setContentIntent(pendingIntent)
 
         startForeground(1, builder.build())
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

@@ -98,19 +98,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginTop="12dp"
-                    android:src="@drawable/app_badge"
+                    android:src="@{vm.form.isWeb ? @drawable/web_badge : @drawable/app_badge}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/date" />
+                    app:layout_constraintTop_toBottomOf="@id/date"
+                    tools:src="@drawable/app_badge" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
                     android:fontFamily="@font/notosans_cjk_kr_regular"
-                    android:text="@{vm.applicationName + `에서 저장됨.`}"
+                    android:singleLine="true"
+                    android:text="@{vm.form.isWeb ? (vm.form.link + `에서 저장됨.`) : (vm.applicationName + `에서 저장됨.`)}"
                     android:textColor="@color/softBlue"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="@id/badge"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/badge"
                     app:layout_constraintTop_toTopOf="@id/badge"
                     tools:text="페이북으로 열기" />
@@ -120,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:layout_marginTop="14dp"
-                    android:background="@color/redPink"
+                    android:background="@{vm.form.isWeb ? @color/pointBlue : @color/redPink}"
                     android:onClick="@{() -> vm.onClickGoScreenShot()}"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/default_margin"

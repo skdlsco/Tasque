@@ -24,10 +24,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         const val MODE_CREATE_FORM = "MODE_CREATE_FORM"
         const val KEY_PACKAGE_NAME = "packageName"
         const val KEY_FILE_PATH = "filePath"
+        const val KEY_WEB_LINK = "webLink"
     }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
-//        screenCapture?.onActivityResult(requestCode, resultCode, data)
+//        fromApp?.onActivityResult(requestCode, resultCode, data)
 //    }
 }
