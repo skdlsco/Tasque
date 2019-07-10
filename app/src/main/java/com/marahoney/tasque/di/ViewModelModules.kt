@@ -29,7 +29,7 @@ object ViewModelModules {
         }
 
         viewModel { (useCase: CategoryFragmentUseCase) ->
-            CategoryFragmentViewModel(useCase)
+            CategoryFragmentViewModel(useCase, get())
         }
 
         viewModel { (useCase: CategoryEditUseCase) ->

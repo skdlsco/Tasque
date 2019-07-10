@@ -51,6 +51,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="@dimen/default_margin"
                 app:layout_constraintTop_toBottomOf="@id/subTitle"
                 app:listItem="@{vm.category}"
                 app:viewModel="@{vm}" />

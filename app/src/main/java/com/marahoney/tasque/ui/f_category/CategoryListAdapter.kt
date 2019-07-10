@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import com.bumptech.glide.Glide
 import com.marahoney.tasque.R
 import com.marahoney.tasque.data.model.Category
 import com.marahoney.tasque.databinding.ItemCategoryBinding
 import com.marahoney.tasque.ui.base.BaseViewHolder
-import com.marahoney.tasque.ui.f_form.FormFragmentViewModel
 
 class CategoryListAdapter(private val viewModel: CategoryFragmentViewModel) : ListAdapter<Category, CategoryListAdapter.ViewHolder>(Category.diffCallback) {
 
@@ -20,19 +20,38 @@ class CategoryListAdapter(private val viewModel: CategoryFragmentViewModel) : Li
         holder.binding.item = item
         holder.binding.vm = viewModel
 
-//        val imageArray = ArrayList<String>()
-//        (0..item.forms.size).forEach {
-//            it
-//        }
-    }
+        val imageArray = viewModel.getThumbNails(item.token)
 
-    fun getImage(pos: Int, imgNum: Int): String? {
-//        if (getItem(pos).forms.size < imgNum)
-//            return null
-//        val formData = getItem(pos).forms[imgNum].data.firstOrNull { it is FormData.Image }
-//                ?: return null
-//        return (formData as FormData.Image).image
-        return ""
+        holder.binding.run { }
+        holder.binding.run {
+            when (imageArray.size) {
+                in 0..1 -> {
+                    image2.visibility = View.GONE
+                    image3.visibility = View.GONE
+                    image4.visibility = View.GONE
+                }
+                2 -> {
+                    image3.visibility = View.GONE
+                    image4.visibility = View.GONE
+                }
+                3 -> {
+                    image4.visibility = View.GONE
+                }
+            }
+
+            imageArray.forEachIndexed { index, url ->
+                val view = when (index) {
+                    0 -> image1
+                    1 -> image2
+                    2 -> image3
+                    3 -> image4
+                    else -> image1
+                }
+                Glide.with(view)
+                        .load(url)
+                        .into(view)
+            }
+        }
     }
 
     class ViewHolder(view: View) : BaseViewHolder<ItemCategoryBinding>(view)
