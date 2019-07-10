@@ -57,7 +57,7 @@
                     android:layout_marginEnd="@dimen/default_margin"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/notosans_cjk_kr_black"
-                    android:hint="여러 구도의 카메라 구도"
+                    android:hint="폼 제목"
                     android:includeFontPadding="false"
                     android:onTextChanged="@{(text, start, before, count) -> vm.onTitleTextChanged(text)}"
                     android:paddingTop="16dp"
