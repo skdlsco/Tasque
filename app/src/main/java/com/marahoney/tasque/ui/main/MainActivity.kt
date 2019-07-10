@@ -9,18 +9,17 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.widget.SearchView
+import androidx.viewpager.widget.ViewPager
 import com.marahoney.tasque.R
 import com.marahoney.tasque.capture.MyService
 import com.marahoney.tasque.capture.ScreenCapture
 import com.marahoney.tasque.databinding.ActivityMainBinding
 import com.marahoney.tasque.ui.base.BaseActivity
+import com.marahoney.tasque.ui.category_edit.CategoryEditActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.appcompat.v7.coroutines.onClose
-import org.jetbrains.anko.appcompat.v7.coroutines.onSearchClick
+import org.jetbrains.anko.startActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -33,6 +32,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val viewModel by viewModel<MainViewModel> { parametersOf(useCase) }
 
     private var menu: Menu? = null
+
+    private val onPageChangeListener = object : ViewPager.OnPageChangeListener {
+        override fun onPageScrollStateChanged(state: Int) {}
+        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+        override fun onPageSelected(position: Int) {
+            menu?.findItem(R.id.add)?.isVisible = position == 0
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +73,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initViewPager() {
         viewPager.adapter = MainPagerAdapter(supportFragmentManager)
+        viewPager.addOnPageChangeListener(onPageChangeListener)
     }
 
     private fun initTabLayout() {
@@ -80,8 +88,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("asdfs", "${requestCode}")
-        Log.e("asdfs", "${resultCode}")
         try {
             startService(Intent(this, MyService::class.java).apply {
                 putExtra("resultCode", resultCode)
@@ -100,15 +106,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        this.menu = menu
         menuInflater.inflate(R.menu.main_category, menu)
-        (menu?.findItem(R.id.search)?.actionView as SearchView)?.run {
-            onSearchClick {
-                menu.findItem(R.id.add).isVisible = false
-            }
-            onClose {
-                menu.findItem(R.id.add).isVisible = true
-            }
-        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -117,8 +116,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             R.id.search -> {
 
             }
+
+            R.id.add -> {
+                startActivity<CategoryEditActivity>(CategoryEditActivity.KEY_MODE to CategoryEditActivity.MODE_CREATE)
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewPager.removeOnPageChangeListener(onPageChangeListener)
     }
 
     companion object {

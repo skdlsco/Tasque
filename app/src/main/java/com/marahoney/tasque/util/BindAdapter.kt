@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.marahoney.tasque.data.model.Category
 import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.data.model.FormData
+import com.marahoney.tasque.ui.category_edit.CategoryEditViewModel
 import com.marahoney.tasque.ui.f_category.CategoryFragmentViewModel
 import com.marahoney.tasque.ui.f_category.CategoryListAdapter
 import com.marahoney.tasque.ui.f_form.FormFragmentViewModel
@@ -131,6 +132,31 @@ object BindAdapter {
             com.marahoney.tasque.ui.form_detail.FormDataListAdapter(viewModel).run {
                 view.adapter = this
                 this.submitList(items)
+            }
+        }
+    }
+
+
+    @JvmStatic
+    @BindingAdapter(value = ["listItem", "selectedItem", "viewModel"])
+    fun setItems(view: RecyclerView, items: List<Form>, selectedItem: ArrayList<String>, viewModel: CategoryEditViewModel) {
+
+        if (view.layoutManager == null) {
+            view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        }
+
+        view.adapter?.run {
+            if (this is com.marahoney.tasque.ui.category_edit.FormListAdapter) {
+                this.submitList(items)
+                this.selectedItemList.clear()
+                this.selectedItemList.addAll(selectedItem)
+            }
+        } ?: run {
+            com.marahoney.tasque.ui.category_edit.FormListAdapter(viewModel).run {
+                view.adapter = this
+                this.submitList(items)
+                this.selectedItemList.clear()
+                this.selectedItemList.addAll(selectedItem)
             }
         }
     }

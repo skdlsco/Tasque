@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.marahoney.tasque.ui.category_edit.CategoryEditViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.category_edit.CategoryEditActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/categoryTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/notosans_cjk_kr_black"
+                    android:hint="카테고리 제목"
+                    android:includeFontPadding="false"
+                    android:onTextChanged="@{(text, start, before, count) -> vm.onTitleTextChanged(text)}"
+                    android:textColor="@color/textBlack"
+                    android:textColorHint="@color/textGrey"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/categoryText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:fontFamily="@font/notosans_cjk_kr_medium"
+                    android:text="카테고리에 넣을 폼을 선택하세요."
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/categoryTitle" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/formRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingStart="18dp"
+                    android:paddingEnd="18dp"
+                    android:paddingBottom="@dimen/default_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/categoryText"
+                    app:listItem="@{vm.forms}"
+                    app:selectedItem="@{vm.selectedForm}"
+                    app:viewModel="@{vm}"
+                    tools:listitem="@layout/item_category_form" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

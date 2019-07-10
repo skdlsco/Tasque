@@ -1,5 +1,7 @@
 package com.marahoney.tasque.di
 
+import com.marahoney.tasque.ui.category_edit.CategoryEditUseCase
+import com.marahoney.tasque.ui.category_edit.CategoryEditViewModel
 import com.marahoney.tasque.ui.f_category.CategoryFragmentUseCase
 import com.marahoney.tasque.ui.f_category.CategoryFragmentViewModel
 import com.marahoney.tasque.ui.f_form.FormFragmentUseCase
@@ -28,6 +30,10 @@ object ViewModelModules {
 
         viewModel { (useCase: CategoryFragmentUseCase) ->
             CategoryFragmentViewModel(useCase)
+        }
+
+        viewModel { (useCase: CategoryEditUseCase) ->
+            CategoryEditViewModel(useCase, get())
         }
 
         viewModel { (useCase: FormEditUseCase) ->
