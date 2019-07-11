@@ -19,6 +19,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.vm = viewModel
+        viewDataBinding.lifecycleOwner = this
     }
 
     companion object {

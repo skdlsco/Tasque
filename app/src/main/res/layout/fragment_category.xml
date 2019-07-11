@@ -40,11 +40,12 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="40dp"
                 android:fontFamily="@font/notosans_cjk_kr_medium"
-                android:text="n개의 저장된 카테고리"
+                android:text="@{vm.category.size + `개의 저장된 카테고리`}"
                 android:textColor="@color/textGrey"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/title" />
+                app:layout_constraintTop_toTopOf="@id/title"
+                tools:text="n개의 저장된 카테고리" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

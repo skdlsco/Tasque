@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.media.projection.MediaProjectionManager
 import android.net.Uri
 import android.os.Build
@@ -11,7 +12,11 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import com.marahoney.tasque.R
 import com.marahoney.tasque.capture.MyService
 import com.marahoney.tasque.capture.ScreenCapture
@@ -22,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.lang.ref.WeakReference
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -38,6 +44,30 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
         override fun onPageSelected(position: Int) {
             menu?.findItem(R.id.add)?.isVisible = position == 0
+        }
+    }
+
+    private val tabSelectedListener = object : TabLayout.OnTabSelectedListener {
+
+        var tabLayout: WeakReference<TabLayout?> = WeakReference(null)
+        override fun onTabReselected(tab: TabLayout.Tab?) {
+        }
+
+        override fun onTabUnselected(tab: TabLayout.Tab?) {
+            if (tabLayout == null || tab == null)
+                return
+            val tabLayout = (tabLayout.get()?.getChildAt(0) as ViewGroup).getChildAt(tab!!.position) as LinearLayout
+            val tabTextView = tabLayout.getChildAt(1) as TextView
+            tabTextView.setTypeface(tabTextView.typeface, Typeface.NORMAL)
+        }
+
+        override fun onTabSelected(tab: TabLayout.Tab?) {
+            if (tabLayout == null || tab == null)
+                return
+
+            val tabLayout = (tabLayout.get()?.getChildAt(0) as ViewGroup).getChildAt(tab!!.position) as LinearLayout
+            val tabTextView = tabLayout.getChildAt(1) as TextView
+            tabTextView.setTypeface(tabTextView.typeface, Typeface.BOLD)
         }
     }
 
@@ -74,6 +104,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun initViewPager() {
         viewPager.adapter = MainPagerAdapter(supportFragmentManager)
         viewPager.addOnPageChangeListener(onPageChangeListener)
+        viewPager.offscreenPageLimit = 4
     }
 
     private fun initTabLayout() {
@@ -84,6 +115,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             addTab(newTab())
             setupWithViewPager(viewPager)
         }
+        tabSelectedListener.tabLayout = WeakReference(tabLayout)
+        tabLayout.addOnTabSelectedListener(tabSelectedListener)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

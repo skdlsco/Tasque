@@ -53,17 +53,24 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
         val json = gson.toJson(category)
         categoryEdit.putString(category.token, json)
         categoryEdit.commit()
+        _categories.add(category)
     }
 
     override fun updateCategory(category: Category) {
         val json = gson.toJson(category)
         categoryEdit.putString(category.token, json)
         categoryEdit.commit()
+        val i = _categories.value?.indexOfFirst { it.token == category.token } ?: -1
+        if (i != -1)
+            _categories.value?.set(i, category)
+        _categories.notifyDataChanged()
     }
 
     override fun removeCategory(category: Category) {
         categoryEdit.remove(category.token)
         categoryEdit.commit()
+        _categories.remove(category)
+        _categories.notifyDataChanged()
     }
 
     override fun loadData() {

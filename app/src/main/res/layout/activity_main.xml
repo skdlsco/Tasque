@@ -44,7 +44,6 @@
                     app:tabIndicatorHeight="10dp"
                     app:tabMaxWidth="0dp"
                     app:tabMode="fixed"
-                    app:changeFont="@{true}"
                     app:tabSelectedTextColor="@color/colorAccent"
                     app:tabTextColor="@color/textGrey"/>
         </com.google.android.material.appbar.AppBarLayout>

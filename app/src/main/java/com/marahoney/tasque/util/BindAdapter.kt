@@ -27,47 +27,10 @@ import com.marahoney.tasque.ui.form_edit.FormEditViewModel
 
 object BindAdapter {
 
-    private val tabSelectedListener = object : TabLayout.OnTabSelectedListener {
-
-        var tabLayout: TabLayout? = null
-        override fun onTabReselected(tab: TabLayout.Tab?) {
-        }
-
-        override fun onTabUnselected(tab: TabLayout.Tab?) {
-            if (tabLayout == null || tab == null)
-                return
-            val tabLayout = (tabLayout?.getChildAt(0) as ViewGroup).getChildAt(tab!!.position) as LinearLayout
-            val tabTextView = tabLayout.getChildAt(1) as TextView
-            tabTextView.setTypeface(tabTextView.typeface, Typeface.NORMAL)
-        }
-
-        override fun onTabSelected(tab: TabLayout.Tab?) {
-            if (tabLayout == null || tab == null)
-                return
-
-            val tabLayout = (tabLayout?.getChildAt(0) as ViewGroup).getChildAt(tab!!.position) as LinearLayout
-            val tabTextView = tabLayout.getChildAt(1) as TextView
-            tabTextView.setTypeface(tabTextView.typeface, Typeface.BOLD)
-        }
-    }
-
     @JvmStatic
     @BindingAdapter(value = ["underLine"])
     fun setUnderLine(view: TextView, isUnderLine: Boolean) {
-
         view.paintFlags = view.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-    }
-
-    @JvmStatic
-    @BindingAdapter(value = ["changeFont"])
-    fun setPageChangeListener(view: TabLayout, isChangeFont: Boolean) {
-
-        tabSelectedListener.tabLayout = view
-
-        if (isChangeFont)
-            view.addOnTabSelectedListener(tabSelectedListener)
-        else
-            view.removeOnTabSelectedListener(tabSelectedListener)
     }
 
     @JvmStatic

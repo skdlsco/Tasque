@@ -10,11 +10,7 @@ import com.marahoney.tasque.ui.base.BaseViewModel
 class CategoryFragmentViewModel(private val useCase: CategoryFragmentUseCase,
                                 private val dataRepository: DataRepository) : BaseViewModel() {
 
-    val category = dataRepository.categories
-
-    init {
-
-    }
+    val category get() = dataRepository.categories
 
     private val categoryObserver = Observer<ArrayList<Category>> {
         useCase.notifyRecyclerView()

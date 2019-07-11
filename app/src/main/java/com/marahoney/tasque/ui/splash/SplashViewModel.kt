@@ -22,18 +22,21 @@ class SplashViewModel(private val useCase: SplashUseCase,
     else
         false
 
+    var splashRunnable: SplashThread? = SplashThread()
+
     init {
         if (!dataRepository.isLoaded)
             dataRepository.loadData()
 
         if (mode) {
             postPicture()
-        } else
-            Thread {
-                Thread.sleep(1000)
+        } else {
+            Thread(splashRunnable).start()
+            splashRunnable?.callback = {
                 useCase.startMainActivity()
                 useCase.finish()
-            }.start()
+            }
+        }
     }
 
     private fun postPicture() {
@@ -70,5 +73,11 @@ class SplashViewModel(private val useCase: SplashUseCase,
                     useCase.finish()
                 })
                 .also { addDisposable(it) }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        splashRunnable?.callback = null
+        splashRunnable = null
     }
 }
