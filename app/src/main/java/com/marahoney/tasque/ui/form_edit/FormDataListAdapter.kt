@@ -1,5 +1,6 @@
 package com.marahoney.tasque.ui.form_edit
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.View
@@ -68,6 +69,10 @@ class FormDataListAdapter(private val viewModel: FormEditViewModel,
 
     class ImageViewHolder(view: View) : BaseViewHolder<ItemFormEditImageBinding>(view)
     class ArticleViewHolder(view: View) : BaseViewHolder<ItemFormEditArticleBinding>(view)
+
+    override fun submitList(list: MutableList<FormData>?) {
+        super.submitList(list)
+    }
 
     companion object {
         const val VIEW_TYPE_IMAGE = 1

@@ -18,7 +18,6 @@ import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.MODE_EDIT
 import com.marahoney.tasque.util.TokenUtil
 import java.util.*
 
-
 class FormEditViewModel(private val useCase: FormEditUseCase,
                         private val dataRepository: DataRepository) : BaseViewModel() {
 
@@ -34,7 +33,7 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
 
     private lateinit var packageName: String
     private lateinit var filePath: String
-    var link: String?= null
+    var link: String? = null
 
     // mode 비교해서 form 데이터값 설정하기
     private val mode: Int = useCase.intent.getIntExtra(KEY_MODE, MODE_CREATE)
@@ -43,7 +42,8 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
         if (_formDataArray.value == null)
             return@FormDataItemTouchHelperCallback
         Collections.swap(_formDataArray.value!!, from, to)
-        useCase.notifyRecyclerView(from, to)
+        _formDataArray.value = _formDataArray.value
+        useCase.notifyRecyclerViewItemMove(from, to)
     }
 
     init {
@@ -92,10 +92,18 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
         _title.value = text.toString()
     }
 
-    fun onArticleTextChanged(text: CharSequence, pos: Int) {
+    fun onArticleTextChanged(text: CharSequence, item: FormData.Article, pos: Int) {
+        val realPos = _formDataArray.value?.indexOf(item) ?: pos
         val temp = _formDataArray.value!!
-        (temp[pos] as FormData.Article).article = text.toString()
-        _formDataArray.value = temp
+        if (text.isEmpty()) {
+            temp.removeAt(realPos)
+            _formDataArray.value = temp
+            useCase.notifyRecyclerViewItemRemove(realPos)
+            useCase.hideKeyboard()
+        } else {
+            (temp[realPos] as FormData.Article).article = text.toString()
+            _formDataArray.value = temp
+        }
     }
 
     fun onClickGoScreenShot() {
@@ -103,6 +111,11 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
     }
 
     fun onClickAddButton() {
+        if (_formDataArray.value?.isNotEmpty() == true) {
+            val last = _formDataArray.value?.last()
+            if (last != null && last is FormData.Article && last.article.isEmpty())
+                return
+        }
         _formDataArray.value?.add(FormData.Article(""))
         _formDataArray.value = _formDataArray.value
         useCase.notifyRecyclerViewItemAdd(_formDataArray.value?.size ?: 0)

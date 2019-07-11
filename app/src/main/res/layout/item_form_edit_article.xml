@@ -41,7 +41,7 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/notosans_cjk_kr_regular"
                 android:includeFontPadding="false"
-                android:onTextChanged="@{(text, start, before, count) -> vm.onArticleTextChanged(text, pos)}"
+                android:onTextChanged="@{(text, start, before, count) -> vm.onArticleTextChanged(text, item, pos)}"
                 android:text="@{item.article}"
                 android:textColor="@color/textBlack"
                 tools:text="구도(構圖)는 미술에서 미적 효과를 얻기 위해 여러 가지 부분을 전체적으로 조화롭게 배치하는 수단을 가리키며, 다음과 같은 종류가 있다." />

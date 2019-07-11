@@ -8,6 +8,7 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.marahoney.tasque.BuildConfig
 import com.marahoney.tasque.ui.main.MainActivity
+import com.marahoney.tasque.util.KeyboardUtil
 import java.io.File
 
 
@@ -16,16 +17,24 @@ class FormEditUseCase(private val activity: AppCompatActivity,
 
     val intent: Intent get() = activity.intent
 
-    fun notifyRecyclerViewItemAdd(pos: Int) {
-        recyclerView.adapter?.notifyItemInserted(pos)
-    }
-
     fun notifyRecyclerView() {
         recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    fun notifyRecyclerView(from: Int, to: Int) {
+    fun notifyRecyclerViewItemMove(from: Int, to: Int) {
         recyclerView.adapter?.notifyItemMoved(from, to)
+    }
+
+    fun notifyRecyclerViewItemAdd(pos: Int) {
+        recyclerView.adapter?.notifyItemInserted(pos)
+    }
+
+    fun notifyRecyclerViewItemRemove(pos: Int) {
+        recyclerView.adapter?.notifyItemRemoved(pos)
+    }
+
+    fun hideKeyboard(){
+        KeyboardUtil.hideSoftKeyboard(activity)
     }
 
     fun getApplicationNameFromPackageName(packageName: String): String {
