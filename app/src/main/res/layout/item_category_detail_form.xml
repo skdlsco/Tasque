@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.marahoney.tasque.data.model.Form" />
+
+        <variable
+            name="vm"
+            type="com.marahoney.tasque.ui.category_detail.CategoryDetailViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="6dp"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/frame"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.eka.roundlayout.RoundLayout
+                android:id="@+id/realFrame"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/frame"
+                app:layout_constraintEnd_toEndOf="@id/frame"
+                app:layout_constraintStart_toStartOf="@id/frame"
+                app:layout_constraintTop_toTopOf="@id/frame"
+                app:radius="16dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/image1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/colorAccent"
+                        app:layout_constraintBottom_toTopOf="@id/image3"
+                        app:layout_constraintEnd_toStartOf="@id/image2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_goneMarginBottom="0dp"
+                        app:layout_goneMarginEnd="0dp" />
+
+                    <ImageView
+                        android:id="@+id/image2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:src="@color/colorAccent"
+                        app:layout_constraintBottom_toTopOf="@id/image4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/image1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_goneMarginBottom="0dp"
+                        app:layout_goneMarginStart="0dp" />
+
+                    <ImageView
+                        android:id="@+id/image3"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:src="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/image4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/image1"
+                        app:layout_goneMarginEnd="0dp"
+                        app:layout_goneMarginTop="0dp" />
+
+                    <ImageView
+                        android:id="@+id/image4"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@color/colorAccent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/image3"
+                        app:layout_constraintTop_toBottomOf="@id/image2"
+                        app:layout_goneMarginStart="0dp"
+                        app:layout_goneMarginTop="0dp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.eka.roundlayout.RoundLayout>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/notosans_cjk_kr_bold"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:text="@{item.title}"
+                android:textColor="@color/textBlack"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/frame" />
+
+            <TextView
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_cjk_kr_regular"
+                android:text="@{item.info}"
+                android:textColor="@color/textGrey"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                tools:text="글자 수 5,392자" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:fontFamily="@font/notosans_cjk_kr_medium"
+                android:includeFontPadding="false"
+                android:text="@{item.createText}"
+                android:textColor="@color/textBlack"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/info"
+                tools:text="2019.06.13(목)에 생성됨." />
+
+            <ImageView
+                android:id="@+id/badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:src="@{item.isWeb ? @drawable/web_badge: @drawable/app_badge}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date"
+                tools:src="@drawable/app_badge" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/notosans_cjk_kr_regular"
+                android:singleLine="true"
+                android:text="@{item.isWeb ? item.link + ` 열기` : vm.getApplicationNameFromPackageName(item.capturedPackage) +` (으)로 열기`}"
+                android:textColor="@color/softBlue"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@id/badge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/badge"
+                app:layout_constraintTop_toTopOf="@id/badge"
+                tools:text="페이스북으로 열기" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</layout>

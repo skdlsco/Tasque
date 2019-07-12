@@ -1,23 +1,25 @@
-package com.marahoney.tasque.ui.category_edit
+package com.marahoney.tasque.ui.category_detail
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import com.marahoney.tasque.R
-import com.marahoney.tasque.databinding.ActivityCategoryEditBinding
+import com.marahoney.tasque.databinding.ActivityCategoryDetailBinding
 import com.marahoney.tasque.ui.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_category_detail.*
 import kotlinx.android.synthetic.main.activity_category_edit.*
+import kotlinx.android.synthetic.main.activity_category_edit.formRecyclerView
 import kotlinx.android.synthetic.main.activity_category_edit.toolbar
-import kotlinx.android.synthetic.main.activity_form_edit.*
+import org.jetbrains.anko.sdk27.coroutines.textChangedListener
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class CategoryEditActivity : BaseActivity<ActivityCategoryEditBinding>() {
+class CategoryDetailActivity : BaseActivity<ActivityCategoryDetailBinding>() {
 
-    override val layoutResourceId: Int = R.layout.activity_category_edit
-
-    private val useCase by lazy { CategoryEditUseCase(this, formRecyclerView) }
-    private val viewModel by viewModel<CategoryEditViewModel> { parametersOf(useCase) }
+    override val layoutResourceId: Int = R.layout.activity_category_detail
+    private val useCase by lazy { CategoryDetailUseCase(this, formRecyclerView) }
+    private val viewModel by viewModel<CategoryDetailViewModel> { parametersOf(useCase) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,7 @@ class CategoryEditActivity : BaseActivity<ActivityCategoryEditBinding>() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.category_edit, menu)
+        menuInflater.inflate(R.menu.category_detail, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -45,12 +47,7 @@ class CategoryEditActivity : BaseActivity<ActivityCategoryEditBinding>() {
         viewModel.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
     }
-
-
     companion object {
-        const val MODE_CREATE = 1
-        const val MODE_EDIT = 2
-        const val KEY_MODE = "mode"
         const val KEY_CATEGORY_TOKEN = "categoryToken"
     }
 }

@@ -3,12 +3,14 @@ package com.marahoney.tasque.ui.f_category
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.marahoney.tasque.R
 import com.marahoney.tasque.data.model.Category
 import com.marahoney.tasque.databinding.ItemCategoryBinding
 import com.marahoney.tasque.ui.base.BaseViewHolder
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class CategoryListAdapter(private val viewModel: CategoryFragmentViewModel) : ListAdapter<Category, CategoryListAdapter.ViewHolder>(Category.diffCallback) {
 
@@ -22,7 +24,6 @@ class CategoryListAdapter(private val viewModel: CategoryFragmentViewModel) : Li
 
         val imageArray = viewModel.getThumbNails(item.token)
 
-        holder.binding.run { }
         holder.binding.run {
             when (imageArray.size) {
                 in 0..1 -> {
@@ -31,11 +32,25 @@ class CategoryListAdapter(private val viewModel: CategoryFragmentViewModel) : Li
                     image4.visibility = View.GONE
                 }
                 2 -> {
+                    image2.visibility = View.VISIBLE
                     image3.visibility = View.GONE
                     image4.visibility = View.GONE
                 }
                 3 -> {
+                    image2.visibility = View.VISIBLE
+                    image3.visibility = View.VISIBLE
                     image4.visibility = View.GONE
+                    image3.layoutParams = (image3.layoutParams as ConstraintLayout.LayoutParams).apply {
+                        this.endToStart = image2.id
+                    }
+                }
+                4 -> {
+                    image2.visibility = View.VISIBLE
+                    image3.visibility = View.VISIBLE
+                    image4.visibility = View.VISIBLE
+                    image3.layoutParams = (image3.layoutParams as ConstraintLayout.LayoutParams).apply {
+                        this.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                    }
                 }
             }
 
@@ -51,6 +66,10 @@ class CategoryListAdapter(private val viewModel: CategoryFragmentViewModel) : Li
                         .load(url)
                         .into(view)
             }
+        }
+
+        holder.itemView.onClick {
+            viewModel.onClickForm(item, position)
         }
     }
 

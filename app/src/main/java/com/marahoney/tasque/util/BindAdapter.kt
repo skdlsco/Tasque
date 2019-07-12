@@ -1,19 +1,16 @@
 package com.marahoney.tasque.util
 
 import android.graphics.Paint
-import android.graphics.Typeface
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.material.tabs.TabLayout
 import com.marahoney.tasque.data.model.Category
 import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.data.model.FormData
+import com.marahoney.tasque.ui.category_detail.CategoryDetailViewModel
 import com.marahoney.tasque.ui.category_edit.CategoryEditViewModel
 import com.marahoney.tasque.ui.f_category.CategoryFragmentViewModel
 import com.marahoney.tasque.ui.f_category.CategoryListAdapter
@@ -120,6 +117,26 @@ object BindAdapter {
                 this.submitList(items)
                 this.selectedItemList.clear()
                 this.selectedItemList.addAll(selectedItem)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter(value = ["listItem", "viewModel"])
+    fun setItems(view: RecyclerView, items: List<Form>, viewModel: CategoryDetailViewModel) {
+
+        if (view.layoutManager == null) {
+            view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        }
+
+        view.adapter?.run {
+            if (this is com.marahoney.tasque.ui.category_detail.FormListAdapter) {
+                this.submitList(items)
+            }
+        } ?: run {
+            com.marahoney.tasque.ui.category_detail.FormListAdapter(viewModel).run {
+                view.adapter = this
+                this.submitList(items)
             }
         }
     }

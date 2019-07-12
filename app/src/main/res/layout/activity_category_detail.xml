@@ -7,14 +7,14 @@
 
         <variable
             name="vm"
-            type="com.marahoney.tasque.ui.category_edit.CategoryEditViewModel" />
+            type="com.marahoney.tasque.ui.category_detail.CategoryDetailViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.category_edit.CategoryEditActivity">
+        tools:context=".ui.category_detail.CategoryDetailActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <EditText
+                <TextView
                     android:id="@+id/categoryTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -38,16 +38,14 @@
                     android:layout_marginEnd="@dimen/default_margin"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/notosans_cjk_kr_black"
-                    android:hint="카테고리 제목"
                     android:includeFontPadding="false"
-                    android:onTextChanged="@{(text, start, before, count) -> vm.onTitleTextChanged(text)}"
-                    android:text="@{vm.title}"
+                    android:text="@{vm.category.title}"
                     android:textColor="@color/textBlack"
-                    android:textColorHint="@color/textGrey"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="카테고리 제목이다!" />
 
                 <TextView
                     android:id="@+id/categoryText"
@@ -56,9 +54,10 @@
                     android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginEnd="@dimen/default_margin"
                     android:fontFamily="@font/notosans_cjk_kr_medium"
-                    android:text="카테고리에 넣을 폼을 선택하세요."
+                    android:text="@{vm.category.forms.size + `개의 폼 포함`}"
                     android:textSize="12sp"
-                    app:layout_constraintTop_toBottomOf="@id/categoryTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/categoryTitle"
+                    tools:text="n개의 폼 포함" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/formRecyclerView"
@@ -71,7 +70,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/categoryText"
                     app:listItem="@{vm.forms}"
-                    app:selectedItem="@{vm.selectedForm}"
                     app:viewModel="@{vm}"
                     tools:listitem="@layout/item_category_edit_form" />
             </androidx.constraintlayout.widget.ConstraintLayout>

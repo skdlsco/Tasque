@@ -20,8 +20,8 @@ class CategoryFragmentViewModel(private val useCase: CategoryFragmentUseCase,
         category.observeForever(categoryObserver)
     }
 
-    fun onClickForm(form: Form, pos: Int) {
-//        useCase.startFormDetailActivity(form.token)
+    fun onClickForm(category: Category, pos: Int) {
+        useCase.startCategoryDetail(category.token)
     }
 
     override fun onCleared() {

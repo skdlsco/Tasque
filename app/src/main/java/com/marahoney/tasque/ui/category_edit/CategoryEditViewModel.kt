@@ -26,7 +26,7 @@ class CategoryEditViewModel(
 
     init {
         if (mode == CategoryEditActivity.MODE_EDIT) {
-            val categoryToken = useCase.intent.getStringExtra(CategoryEditActivity.KEY_FORM_TOKEN)
+            val categoryToken = useCase.intent.getStringExtra(CategoryEditActivity.KEY_CATEGORY_TOKEN)
                     ?: ""
             dataRepository.categories.value?.find { it.token == categoryToken }?.let {
                 _title.value = it.title
@@ -60,7 +60,7 @@ class CategoryEditViewModel(
         return selectedForm.value?.contains(item?.token ?: return false) ?: false
     }
 
-    private fun insertForm() {
+    private fun insertCategory() {
         if (_title.value == null || _selectedForm.value == null)
             return
 
@@ -69,11 +69,23 @@ class CategoryEditViewModel(
         useCase.finishActivity()
     }
 
+    private fun updateCategory() {
+        if (_title.value == null || _selectedForm.value == null)
+            return
+        val categoryToken = useCase.intent.getStringExtra(CategoryEditActivity.KEY_CATEGORY_TOKEN)
+                ?: ""
+        val category = Category(categoryToken, _title.value!!, _selectedForm.value!!)
+        dataRepository.updateCategory(category)
+        useCase.finishActivity()
+    }
+
     fun onOptionsItemSelected(item: MenuItem?) {
         when (item?.itemId) {
             R.id.done -> {
                 if (mode == CategoryEditActivity.MODE_CREATE)
-                    insertForm()
+                    insertCategory()
+                else if(mode == CategoryEditActivity.MODE_EDIT)
+                    updateCategory()
 
             }
             android.R.id.home -> {

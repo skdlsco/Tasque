@@ -9,6 +9,7 @@ import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
+import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -23,6 +24,7 @@ import com.marahoney.tasque.util.OnSwipeTouchListener
 import org.jetbrains.anko.backgroundResource
 import org.jetbrains.anko.displayMetrics
 import org.jetbrains.anko.sdk27.coroutines.onTouch
+import java.io.File
 import java.util.*
 
 
@@ -103,6 +105,7 @@ class MyService : Service() {
                 putExtra(SplashActivity.KEY_WEB_LINK, webUrl)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
+            sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(it))))
             applicationContext.startActivity(intent)
         }
     }
@@ -115,6 +118,7 @@ class MyService : Service() {
                 putExtra(SplashActivity.KEY_PACKAGE_NAME, packageName)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
+            sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(it))))
             applicationContext.startActivity(intent)
         }
     }

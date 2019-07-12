@@ -1,4 +1,4 @@
-package com.marahoney.tasque.ui.category_edit
+package com.marahoney.tasque.ui.category_detail
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,16 +8,14 @@ import com.bumptech.glide.Glide
 import com.marahoney.tasque.R
 import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.data.model.FormData
-import com.marahoney.tasque.databinding.ItemCategoryEditFormBinding
+import com.marahoney.tasque.databinding.ItemCategoryDetailFormBinding
 import com.marahoney.tasque.ui.base.BaseViewHolder
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class FormListAdapter(private val viewModel: CategoryEditViewModel) : ListAdapter<Form, FormListAdapter.ViewHolder>(Form.diffCallback) {
-
-    val selectedItemList = ArrayList<String>()
+class FormListAdapter(private val viewModel: CategoryDetailViewModel) : ListAdapter<Form, FormListAdapter.ViewHolder>(Form.diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_category_edit_form, parent, false))
+            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_category_detail_form, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -61,12 +59,10 @@ class FormListAdapter(private val viewModel: CategoryEditViewModel) : ListAdapte
             }
         }
 
-        holder.binding.container.alpha = if (selectedItemList.contains(item.token)) 1f else 0.2f
-
         holder.itemView.onClick {
             viewModel.onClickForm(item, position)
         }
     }
 
-    class ViewHolder(view: View) : BaseViewHolder<ItemCategoryEditFormBinding>(view)
+    class ViewHolder(view: View) : BaseViewHolder<ItemCategoryDetailFormBinding>(view)
 }
