@@ -145,7 +145,7 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
             return
         val token = useCase.intent.getStringExtra(KEY_FORM_TOKEN)
         val oldForm = dataRepository.forms.value?.find { it.token == token } ?: return // TODO: 오류
-        val newForm = Form(oldForm.token, _title.value!!, filePath, oldForm.createAt, oldForm.capturedPackage, _formDataArray.value)
+        val newForm = Form(oldForm.token, _title.value!!, filePath, oldForm.createAt, oldForm.capturedPackage, _formDataArray.value, link)
 
         dataRepository.updateForm(newForm)
         useCase.finishActivity()

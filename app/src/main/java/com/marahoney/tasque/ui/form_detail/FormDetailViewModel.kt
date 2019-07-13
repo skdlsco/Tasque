@@ -9,6 +9,7 @@ import com.marahoney.tasque.data.local.DataRepository
 import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.ui.base.BaseViewModel
 import com.marahoney.tasque.ui.form_detail.FormDetailActivity.Companion.KEY_FORM_TOKEN
+import com.marahoney.tasque.ui.menu_bottom_sheet.MenuBottomSheet
 
 
 class FormDetailViewModel(private val useCase: FormDetailUseCase,
@@ -41,8 +42,20 @@ class FormDetailViewModel(private val useCase: FormDetailUseCase,
             R.id.share -> {
 
             }
-            R.id.edit -> {
-                useCase.startEditActivity(_form.value!!.token)
+            R.id.more -> {
+                useCase.showMenuBottomSheet(object : MenuBottomSheet.OnMenuClickListener {
+                    override fun onEditClick() {
+                        useCase.startEditActivity(_form.value!!.token)
+                    }
+
+                    override fun onDeleteClick() {
+                        if (_form.value != null){
+                            dataRepository.forms.removeObserver(formObserver)
+                            dataRepository.removeForm(_form.value!!)
+                        }
+                        useCase.finishActivity()
+                    }
+                })
             }
             android.R.id.home -> {
                 useCase.finishActivity()

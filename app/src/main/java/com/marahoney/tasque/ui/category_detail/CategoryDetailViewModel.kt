@@ -54,7 +54,7 @@ class CategoryDetailViewModel(private val useCase: CategoryDetailUseCase,
     fun onOptionsItemSelected(item: MenuItem?) {
         when (item?.itemId) {
             android.R.id.home -> useCase.finishActivity()
-            R.id.more -> useCase.showBottomSheet(object : MenuBottomSheet.OnMenuClickListener {
+            R.id.more -> useCase.showMenuBottomSheet(object : MenuBottomSheet.OnMenuClickListener {
                 override fun onEditClick() {
                     useCase.startCategoryEditActivity(token)
                 }

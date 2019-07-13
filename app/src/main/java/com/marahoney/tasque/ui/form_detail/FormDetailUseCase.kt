@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.marahoney.tasque.BuildConfig
 import com.marahoney.tasque.ui.form_edit.FormEditActivity
+import com.marahoney.tasque.ui.menu_bottom_sheet.MenuBottomSheet
 import org.jetbrains.anko.startActivity
 import java.io.File
 
@@ -31,6 +32,11 @@ class FormDetailUseCase(private val activity: AppCompatActivity) {
         intent.setDataAndType(uri, "image/png")
         intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         activity.startActivity(intent)
+    }
+
+    fun showMenuBottomSheet(listener: MenuBottomSheet.OnMenuClickListener) {
+        val bottomSheet = MenuBottomSheet.newInstance("폼에 저장된 내용을 수정합니다.", "폼을 삭제합니다.", listener)
+        bottomSheet.show(activity.supportFragmentManager, "formMenuBottomSheet")
     }
 
     fun finishActivity() {

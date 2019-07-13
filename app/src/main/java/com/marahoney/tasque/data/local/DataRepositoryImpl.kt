@@ -45,6 +45,14 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
     override fun removeForm(form: Form) {
         formEdit.remove(form.token)
         formEdit.commit()
+        _categories.value?.forEachIndexed { index, category ->
+            if (category.forms.contains(form.token)) {
+               val new = category.apply {
+                    forms = ArrayList<String>(category.forms).apply { remove(form.token) }.toList()
+                }
+                updateCategory(new)
+            }
+        }
         _forms.remove(form)
         _forms.notifyDataChanged()
     }

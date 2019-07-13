@@ -27,7 +27,7 @@ class CategoryDetailUseCase(private val activity: AppCompatActivity,
         return ""
     }
 
-    fun showBottomSheet(listener: MenuBottomSheet.OnMenuClickListener) {
+    fun showMenuBottomSheet(listener: MenuBottomSheet.OnMenuClickListener) {
         val bottomSheet = MenuBottomSheet.newInstance("카테고리에 있는 폼을 수정합니다.", "카테고리를 삭제합니다.", listener)
         bottomSheet.show(activity.supportFragmentManager, "categoryBottomSheet")
     }

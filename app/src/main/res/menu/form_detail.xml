@@ -9,8 +9,8 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/edit"
-        android:icon="@drawable/ic_edit"
-        android:title="수정"
+        android:id="@+id/more"
+        android:icon="@drawable/ic_more"
+        android:title="더보기"
         app:showAsAction="always" />
 </menu>
