@@ -4,6 +4,8 @@ import com.marahoney.tasque.ui.category_detail.CategoryDetailUseCase
 import com.marahoney.tasque.ui.category_detail.CategoryDetailViewModel
 import com.marahoney.tasque.ui.category_edit.CategoryEditUseCase
 import com.marahoney.tasque.ui.category_edit.CategoryEditViewModel
+import com.marahoney.tasque.ui.category_select.CategorySelectUseCase
+import com.marahoney.tasque.ui.category_select.CategorySelectViewModel
 import com.marahoney.tasque.ui.f_category.CategoryFragmentUseCase
 import com.marahoney.tasque.ui.f_category.CategoryFragmentViewModel
 import com.marahoney.tasque.ui.f_form.FormFragmentUseCase
@@ -40,6 +42,10 @@ object ViewModelModules {
 
         viewModel { (useCase: CategoryDetailUseCase) ->
             CategoryDetailViewModel(useCase, get())
+        }
+
+        viewModel { (useCase: CategorySelectUseCase) ->
+            CategorySelectViewModel(useCase, get())
         }
 
         viewModel { (useCase: FormEditUseCase) ->

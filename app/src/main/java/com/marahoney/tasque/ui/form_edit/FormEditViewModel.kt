@@ -1,6 +1,7 @@
 package com.marahoney.tasque.ui.form_edit
 
-import android.util.Log
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import com.marahoney.tasque.data.local.DataRepository
 import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.data.model.FormData
 import com.marahoney.tasque.ui.base.BaseViewModel
+import com.marahoney.tasque.ui.category_select.CategorySelectActivity
 import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.KEY_FILE_PATH
 import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.KEY_FORM_TOKEN
 import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.KEY_MODE
@@ -25,11 +27,15 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
     private val _formDataArray = MutableLiveData<ArrayList<FormData>>(arrayListOf())
     private val _title = MutableLiveData<String>("")
     private val _isWeb = MutableLiveData<Boolean>(false)
+    private val _categoryTitle = MutableLiveData<String>("카테고리 지정하기")
 
     val applicationName: LiveData<String> get() = _applicationName
     val formDataArray: LiveData<ArrayList<FormData>> get() = _formDataArray
     val title: LiveData<String> get() = _title
     val isWeb: LiveData<Boolean> get() = _isWeb
+    val categoryTitle: LiveData<String> get() = _categoryTitle
+
+    var categoryToken = ""
 
     private lateinit var packageName: String
     private lateinit var filePath: String
@@ -66,6 +72,12 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
 
         _isWeb.value = form.isWeb
         link = form.link ?: ""
+
+        val category = dataRepository.categories.value?.find { it.forms.contains(token) }
+        if (category != null) {
+            _categoryTitle.value = category.title
+            categoryToken = category.token
+        }
     }
 
     private fun initDataCreate() {
@@ -121,6 +133,10 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
         useCase.notifyRecyclerViewItemAdd(_formDataArray.value?.size ?: 0)
     }
 
+    fun onClickCategoryButton() {
+        useCase.startCategorySelectActivity(categoryToken)
+    }
+
     private fun insertForm() {
         if (_title.value == null || _title.value!!.isBlank())
             return
@@ -161,6 +177,19 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
             }
             android.R.id.home -> {
                 useCase.finishActivity()
+            }
+        }
+    }
+
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == FormEditActivity.REQUEST_CODE_CATEGORY_SELECT && resultCode == RESULT_OK && data != null) {
+            val newCategoryToken = data?.getStringExtra(CategorySelectActivity.KEY_SELECTED_CATEGORY)
+                    ?: ""
+            if (newCategoryToken.isNotBlank()) {
+                dataRepository.categories.value?.find { it.token == newCategoryToken }?.let {
+                    categoryToken = it.token
+                    _categoryTitle.value = it.title
+                }
             }
         }
     }

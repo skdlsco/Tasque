@@ -1,5 +1,7 @@
 package com.marahoney.tasque.ui.form_detail
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -30,7 +32,9 @@ class FormDetailActivity : BaseActivity<ActivityFormDetailBinding>() {
             setDisplayShowTitleEnabled(false)
             setDisplayShowHomeEnabled(true)
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_close)
+            val indicator = resources.getDrawable(R.drawable.abc_ic_ab_back_material, null)
+            indicator.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP)
+            setHomeAsUpIndicator(indicator)
         }
     }
 

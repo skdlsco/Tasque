@@ -17,20 +17,25 @@ class FormDetailViewModel(private val useCase: FormDetailUseCase,
 
     private val _form = MutableLiveData<Form>()
     private val _applicationName = MutableLiveData<String>("")
-
+    private val _categoryTitle = MutableLiveData<String>("카테고리 지정 안됨")
 
     val form: LiveData<Form> get() = _form
     val applicationName: LiveData<String> get() = _applicationName
+    val categoryTitle: LiveData<String> get() = _categoryTitle
 
     private val token = useCase.intent.getStringExtra(KEY_FORM_TOKEN)
 
     private val formObserver = Observer<List<Form>> {
         _form.value = it.find { it.token == token }
+        _categoryTitle.value = dataRepository.categories.value?.find { it.forms.contains(_form.value?.token) }?.title
+                ?: "카테고리 지정 안됨"
     }
 
     init {
         dataRepository.forms.observeForever(formObserver)
         _applicationName.value = _form.value?.capturedPackage?.let { useCase.getApplicationNameFromPackageName(it) }
+        _categoryTitle.value = dataRepository.categories.value?.find { it.forms.contains(_form.value?.token) }?.title
+                ?: "카테고리 지정 안됨"
     }
 
     fun onClickGoScreenShot() {
@@ -49,7 +54,7 @@ class FormDetailViewModel(private val useCase: FormDetailUseCase,
                     }
 
                     override fun onDeleteClick() {
-                        if (_form.value != null){
+                        if (_form.value != null) {
                             dataRepository.forms.removeObserver(formObserver)
                             dataRepository.removeForm(_form.value!!)
                         }

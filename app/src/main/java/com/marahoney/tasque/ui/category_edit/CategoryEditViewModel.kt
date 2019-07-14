@@ -3,6 +3,7 @@ package com.marahoney.tasque.ui.category_edit
 import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.marahoney.tasque.R
 import com.marahoney.tasque.data.local.DataRepository
 import com.marahoney.tasque.data.model.Category
@@ -15,6 +16,7 @@ class CategoryEditViewModel(
         private val dataRepository: DataRepository) : BaseViewModel() {
 
     private val _title = MutableLiveData<String>()
+    private val _forms = MutableLiveData<List<Form>>()
     private val _selectedForm = MutableLiveData<ArrayList<String>>(arrayListOf())
 
     val title: LiveData<String> get() = _title
@@ -22,7 +24,14 @@ class CategoryEditViewModel(
 
     val mode = useCase.intent.getIntExtra(CategoryEditActivity.KEY_MODE, 1)
 
-    val forms: LiveData<ArrayList<Form>> get() = dataRepository.forms
+    val forms: LiveData<List<Form>> get() = _forms
+
+    private val formObserver = Observer<List<Form>> {
+        _forms.value = it.filter {
+            !(dataRepository.categories.value?.any { category -> category.forms.contains(it.token) }
+                    ?: true) || selectedForm.value?.contains(it.token) ?: true
+        }
+    }
 
     init {
         if (mode == CategoryEditActivity.MODE_EDIT) {
@@ -34,6 +43,8 @@ class CategoryEditViewModel(
                 _selectedForm.value = _selectedForm.value
             }
         }
+
+        dataRepository.forms.observeForever(formObserver)
     }
 
     fun onTitleTextChanged(text: CharSequence) {
@@ -84,7 +95,7 @@ class CategoryEditViewModel(
             R.id.done -> {
                 if (mode == CategoryEditActivity.MODE_CREATE)
                     insertCategory()
-                else if(mode == CategoryEditActivity.MODE_EDIT)
+                else if (mode == CategoryEditActivity.MODE_EDIT)
                     updateCategory()
 
             }
@@ -92,5 +103,10 @@ class CategoryEditViewModel(
                 useCase.finishActivity()
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        dataRepository.forms.removeObserver(formObserver)
     }
 }

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.marahoney.tasque.ui.category_edit.CategoryEditActivity
+import com.marahoney.tasque.ui.form_detail.FormDetailActivity
 import com.marahoney.tasque.ui.menu_bottom_sheet.MenuBottomSheet
 import org.jetbrains.anko.startActivity
 
@@ -43,5 +44,10 @@ class CategoryDetailUseCase(private val activity: AppCompatActivity,
 
     fun notifyRecyclerView() {
         recyclerView?.adapter?.notifyDataSetChanged()
+    }
+
+    fun startFormDetailActivity(token: String?) {
+        if (token != null)
+            activity.startActivity<FormDetailActivity>(FormDetailActivity.KEY_FORM_TOKEN to token)
     }
 }

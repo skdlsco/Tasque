@@ -1,27 +1,23 @@
-package com.marahoney.tasque.ui.category_detail
+package com.marahoney.tasque.ui.category_select
 
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import com.marahoney.tasque.R
-import com.marahoney.tasque.databinding.ActivityCategoryDetailBinding
+import com.marahoney.tasque.databinding.ActivityCategorySelectBinding
 import com.marahoney.tasque.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_category_detail.*
-import kotlinx.android.synthetic.main.activity_category_edit.*
-import kotlinx.android.synthetic.main.activity_category_edit.formRecyclerView
-import kotlinx.android.synthetic.main.activity_category_edit.toolbar
-import org.jetbrains.anko.sdk27.coroutines.textChangedListener
+import kotlinx.android.synthetic.main.activity_form_edit.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class CategoryDetailActivity : BaseActivity<ActivityCategoryDetailBinding>() {
+class CategorySelectActivity : BaseActivity<ActivityCategorySelectBinding>() {
 
-    override val layoutResourceId: Int = R.layout.activity_category_detail
-    private val useCase by lazy { CategoryDetailUseCase(this, formRecyclerView) }
-    private val viewModel by viewModel<CategoryDetailViewModel> { parametersOf(useCase) }
+    override val layoutResourceId: Int = R.layout.activity_category_select
+
+    private val useCase by lazy { CategorySelectUseCase(this) }
+    private val viewModel by viewModel<CategorySelectViewModel> { parametersOf(useCase) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,16 +38,12 @@ class CategoryDetailActivity : BaseActivity<ActivityCategoryDetailBinding>() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.category_detail, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         viewModel.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
     }
-    companion object {
-        const val KEY_CATEGORY_TOKEN = "categoryToken"
+
+    companion object{
+        const val KEY_SELECTED_CATEGORY = "selectedCategory"
     }
 }

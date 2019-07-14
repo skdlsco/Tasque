@@ -1,5 +1,6 @@
 package com.marahoney.tasque.ui.form_edit
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -43,6 +44,11 @@ class FormEditActivity : BaseActivity<ActivityFormEditBinding>() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        viewModel.onActivityResult(requestCode, resultCode, data)
+    }
+
     companion object {
         const val MODE_CREATE = 1
         const val MODE_EDIT = 2
@@ -50,5 +56,6 @@ class FormEditActivity : BaseActivity<ActivityFormEditBinding>() {
         const val KEY_FORM_TOKEN = "formToken"
         const val KEY_PACKAGE_NAME = "packageName"
         const val KEY_FILE_PATH = "filePath"
+        const val REQUEST_CODE_CATEGORY_SELECT = 100
     }
 }

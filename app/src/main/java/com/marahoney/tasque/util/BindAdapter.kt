@@ -12,6 +12,7 @@ import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.data.model.FormData
 import com.marahoney.tasque.ui.category_detail.CategoryDetailViewModel
 import com.marahoney.tasque.ui.category_edit.CategoryEditViewModel
+import com.marahoney.tasque.ui.category_select.CategorySelectViewModel
 import com.marahoney.tasque.ui.f_category.CategoryFragmentViewModel
 import com.marahoney.tasque.ui.f_category.CategoryListAdapter
 import com.marahoney.tasque.ui.f_form.FormFragmentViewModel
@@ -41,6 +42,23 @@ object BindAdapter {
             if (this is CategoryListAdapter) this.submitList(items)
         } ?: run {
             CategoryListAdapter(viewModel).run {
+                view.adapter = this
+                this.submitList(items)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter(value = ["listItem", "viewModel"])
+    fun setItems(view: RecyclerView, items: ArrayList<Category>, viewModel: CategorySelectViewModel) {
+
+        if (view.layoutManager == null) {
+            view.layoutManager = GridLayoutManager(view.context, 2)
+        }
+        view.adapter?.run {
+            if (this is com.marahoney.tasque.ui.category_select.CategoryListAdapter) this.submitList(items)
+        } ?: run {
+            com.marahoney.tasque.ui.category_select.CategoryListAdapter(viewModel).run {
                 view.adapter = this
                 this.submitList(items)
             }

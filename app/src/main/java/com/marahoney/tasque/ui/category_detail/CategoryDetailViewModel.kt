@@ -42,7 +42,7 @@ class CategoryDetailViewModel(private val useCase: CategoryDetailUseCase,
     }
 
     fun onClickForm(item: Form?, position: Int) {
-
+        useCase.startFormDetailActivity(item?.token)
     }
 
     override fun onCleared() {

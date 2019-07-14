@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.marahoney.tasque.BuildConfig
+import com.marahoney.tasque.ui.category_select.CategorySelectActivity
 import com.marahoney.tasque.ui.main.MainActivity
 import com.marahoney.tasque.util.KeyboardUtil
+import org.jetbrains.anko.startActivityForResult
 import java.io.File
 
 
@@ -33,7 +35,7 @@ class FormEditUseCase(private val activity: AppCompatActivity,
         recyclerView.adapter?.notifyItemRemoved(pos)
     }
 
-    fun hideKeyboard(){
+    fun hideKeyboard() {
         KeyboardUtil.hideSoftKeyboard(activity)
     }
 
@@ -66,5 +68,10 @@ class FormEditUseCase(private val activity: AppCompatActivity,
 
     fun finishActivity() {
         activity.finish()
+    }
+
+    fun startCategorySelectActivity(categoryToken: String) {
+        activity.startActivityForResult<CategorySelectActivity>(FormEditActivity.REQUEST_CODE_CATEGORY_SELECT,
+                CategorySelectActivity.KEY_SELECTED_CATEGORY to categoryToken)
     }
 }
