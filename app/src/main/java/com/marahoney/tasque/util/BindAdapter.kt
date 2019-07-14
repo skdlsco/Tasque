@@ -21,6 +21,8 @@ import com.marahoney.tasque.ui.form_detail.FormDetailViewModel
 import com.marahoney.tasque.ui.form_edit.FormDataItemTouchHelperCallback
 import com.marahoney.tasque.ui.form_edit.FormDataListAdapter
 import com.marahoney.tasque.ui.form_edit.FormEditViewModel
+import com.marahoney.tasque.ui.search.SearchListAdapter
+import com.marahoney.tasque.ui.search.SearchViewModel
 
 
 object BindAdapter {
@@ -153,6 +155,26 @@ object BindAdapter {
             }
         } ?: run {
             com.marahoney.tasque.ui.category_detail.FormListAdapter(viewModel).run {
+                view.adapter = this
+                this.submitList(items)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter(value = ["listItem", "viewModel"])
+    fun setItems(view: RecyclerView, items: List<Any>, viewModel: SearchViewModel) {
+
+        if (view.layoutManager == null) {
+            view.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        }
+
+        view.adapter?.run {
+            if (this is SearchListAdapter) {
+                this.submitList(items)
+            }
+        } ?: run {
+            SearchListAdapter(viewModel).run {
                 view.adapter = this
                 this.submitList(items)
             }

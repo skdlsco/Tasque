@@ -12,7 +12,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object Modules {
-    const val baseUrl = "http://prometasv.com/"
+
+    const val baseUrl = "http://www.prometasv.com/"
 
     val apiModule: Module = module {
         single {

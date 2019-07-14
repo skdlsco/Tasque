@@ -16,6 +16,8 @@ import com.marahoney.tasque.ui.form_edit.FormEditUseCase
 import com.marahoney.tasque.ui.form_edit.FormEditViewModel
 import com.marahoney.tasque.ui.main.MainUseCase
 import com.marahoney.tasque.ui.main.MainViewModel
+import com.marahoney.tasque.ui.search.SearchUseCase
+import com.marahoney.tasque.ui.search.SearchViewModel
 import com.marahoney.tasque.ui.splash.SplashUseCase
 import com.marahoney.tasque.ui.splash.SplashViewModel
 import org.koin.android.viewmodel.dsl.viewModel
@@ -58,6 +60,10 @@ object ViewModelModules {
 
         viewModel { (useCase: FormDetailUseCase) ->
             FormDetailViewModel(useCase, get())
+        }
+
+        viewModel { (useCase: SearchUseCase) ->
+            SearchViewModel(useCase, get())
         }
     }
 }

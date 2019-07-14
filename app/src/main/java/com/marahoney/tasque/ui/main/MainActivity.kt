@@ -23,6 +23,7 @@ import com.marahoney.tasque.capture.ScreenCapture
 import com.marahoney.tasque.databinding.ActivityMainBinding
 import com.marahoney.tasque.ui.base.BaseActivity
 import com.marahoney.tasque.ui.category_edit.CategoryEditActivity
+import com.marahoney.tasque.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -147,7 +148,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.search -> {
-
+                startActivity<SearchActivity>()
             }
 
             R.id.add -> {

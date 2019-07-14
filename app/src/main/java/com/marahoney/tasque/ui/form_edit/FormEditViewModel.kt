@@ -87,7 +87,7 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
         if (useCase.intent.hasExtra("image")) {
             val images = useCase.intent.getStringArrayExtra("image")
             images.forEach {
-                _formDataArray.value?.add(FormData.Image("http://prometasv.com$it"))
+                _formDataArray.value?.add(FormData.Image("http://www.prometasv.com$it"))
             }
         }
         if (useCase.intent.hasExtra("text")) {

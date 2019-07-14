@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.category_select.CategorySelectActivity"></activity>
+        <activity android:name=".ui.search.SearchActivity" />
+        <activity android:name=".ui.category_select.CategorySelectActivity" />
         <activity android:name=".ui.category_detail.CategoryDetailActivity" />
         <activity android:name=".ui.category_edit.CategoryEditActivity" />
         <activity android:name=".ui.form_detail.FormDetailActivity" />
