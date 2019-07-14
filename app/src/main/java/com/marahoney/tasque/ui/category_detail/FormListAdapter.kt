@@ -3,6 +3,7 @@ package com.marahoney.tasque.ui.category_detail
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.marahoney.tasque.R
@@ -22,6 +23,7 @@ class FormListAdapter(private val viewModel: CategoryDetailViewModel) : ListAdap
         holder.binding.item = item
         holder.binding.vm = viewModel
 
+
         val imageCount = item.data?.count { it.mode == "image" } ?: 0
         holder.binding.run {
             when (imageCount) {
@@ -31,11 +33,25 @@ class FormListAdapter(private val viewModel: CategoryDetailViewModel) : ListAdap
                     image4.visibility = View.GONE
                 }
                 2 -> {
+                    image2.visibility = View.VISIBLE
                     image3.visibility = View.GONE
                     image4.visibility = View.GONE
                 }
                 3 -> {
+                    image2.visibility = View.VISIBLE
+                    image3.visibility = View.VISIBLE
                     image4.visibility = View.GONE
+                    image3.layoutParams = (image3.layoutParams as ConstraintLayout.LayoutParams).apply {
+                        this.endToStart = image2.id
+                    }
+                }
+                4 -> {
+                    image2.visibility = View.VISIBLE
+                    image3.visibility = View.VISIBLE
+                    image4.visibility = View.VISIBLE
+                    image3.layoutParams = (image3.layoutParams as ConstraintLayout.LayoutParams).apply {
+                        this.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                    }
                 }
             }
             if (imageCount == 0) {
