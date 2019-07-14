@@ -2,6 +2,7 @@ package com.marahoney.tasque.ui.f_category
 
 
 import android.os.Bundle
+import android.view.ViewTreeObserver
 import com.marahoney.tasque.R
 import com.marahoney.tasque.databinding.FragmentCategoryBinding
 import com.marahoney.tasque.ui.base.BaseFragment
@@ -20,6 +21,13 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>() {
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.vm = viewModel
         viewDataBinding.lifecycleOwner = this
+
+        nestedScrollView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                nestedScrollView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                container.minHeight = nestedScrollView.height
+            }
+        })
     }
 
     companion object {

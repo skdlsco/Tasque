@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.marahoney.tasque.ui.category_detail.CategoryDetailViewModel" />
@@ -22,10 +24,12 @@
             android:layout_height="wrap_content" />
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -56,6 +60,7 @@
                     android:fontFamily="@font/notosans_cjk_kr_medium"
                     android:text="@{vm.category.forms.size + `개의 폼 포함`}"
                     android:textSize="12sp"
+                    android:visibility="@{vm.forms.size == 0 ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/categoryTitle"
                     tools:text="n개의 폼 포함" />
 
@@ -67,11 +72,29 @@
                     android:paddingStart="18dp"
                     android:paddingEnd="18dp"
                     android:paddingBottom="@dimen/default_margin"
+                    android:visibility="@{vm.forms.size == 0 ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/categoryText"
                     app:listItem="@{vm.forms}"
                     app:viewModel="@{vm}"
                     tools:listitem="@layout/item_category_edit_form" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="112dp"
+                    android:fontFamily="@font/notosans_cjk_kr_medium"
+                    android:text="해당 카테고리에 폼이 없습니다.\n폼을 추가해주세요."
+                    android:textAlignment="center"
+                    android:textColor="@color/textGrey"
+                    android:textSize="16sp"
+                    android:visibility="@{vm.forms.size == 0 ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/categoryTitle" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

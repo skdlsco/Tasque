@@ -5,15 +5,13 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
+import android.view.ViewTreeObserver
 import com.marahoney.tasque.R
 import com.marahoney.tasque.databinding.ActivityCategoryDetailBinding
 import com.marahoney.tasque.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_category_detail.*
-import kotlinx.android.synthetic.main.activity_category_edit.*
 import kotlinx.android.synthetic.main.activity_category_edit.formRecyclerView
 import kotlinx.android.synthetic.main.activity_category_edit.toolbar
-import org.jetbrains.anko.sdk27.coroutines.textChangedListener
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -28,6 +26,13 @@ class CategoryDetailActivity : BaseActivity<ActivityCategoryDetailBinding>() {
         viewDataBinding.vm = viewModel
 
         initToolbar()
+
+        nestedScrollView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                nestedScrollView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                container.minHeight = nestedScrollView.height
+            }
+        })
     }
 
     private fun initToolbar() {
@@ -51,6 +56,7 @@ class CategoryDetailActivity : BaseActivity<ActivityCategoryDetailBinding>() {
         viewModel.onOptionsItemSelected(item)
         return super.onOptionsItemSelected(item)
     }
+
     companion object {
         const val KEY_CATEGORY_TOKEN = "categoryToken"
     }
