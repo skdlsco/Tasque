@@ -71,7 +71,7 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
         _formDataArray.value?.addAll(form.data ?: arrayListOf())
 
         _isWeb.value = form.isWeb
-        link = form.link ?: ""
+        link = form.link
 
         val category = dataRepository.categories.value?.find { it.forms.contains(token) }
         if (category != null) {
@@ -191,6 +191,16 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
                     _categoryTitle.value = it.title
                 }
             }
+        }
+    }
+
+    fun onClickImage(item: FormData.Image?, position: Int) {
+        val realPos = _formDataArray.value?.indexOf(item ?: return) ?: position
+        val temp = _formDataArray.value!!
+        useCase.showDeleteDialog {
+            temp.removeAt(realPos)
+            _formDataArray.value = temp
+            useCase.notifyRecyclerViewItemRemove(realPos)
         }
     }
 }

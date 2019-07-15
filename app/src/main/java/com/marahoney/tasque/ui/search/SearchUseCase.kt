@@ -31,4 +31,8 @@ class SearchUseCase(private val activity: AppCompatActivity,
     fun startFormDetail(token: String) {
         activity.startActivity<FormDetailActivity>(FormDetailActivity.KEY_FORM_TOKEN to token)
     }
+
+    fun finishActivity() {
+        activity.finish()
+    }
 }

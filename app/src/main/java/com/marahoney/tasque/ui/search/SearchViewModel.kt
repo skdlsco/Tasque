@@ -53,6 +53,10 @@ class SearchViewModel(private val useCase: SearchUseCase,
         return result
     }
 
+    fun onClickBackButton(){
+        useCase.finishActivity()
+    }
+
     fun onClickForm(item: Category, position: Int) {
         useCase.startCategoryDetail(item.token)
     }

@@ -14,6 +14,7 @@ import com.marahoney.tasque.data.model.FormData
 import com.marahoney.tasque.databinding.ItemFormEditArticleBinding
 import com.marahoney.tasque.databinding.ItemFormEditImageBinding
 import com.marahoney.tasque.ui.base.BaseViewHolder
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.sdk27.coroutines.onTouch
 
 class FormDataListAdapter(private val viewModel: FormEditViewModel,
@@ -53,6 +54,10 @@ class FormDataListAdapter(private val viewModel: FormEditViewModel,
         holder.binding.button.onTouch { v, event ->
             if (event.action == ACTION_DOWN)
                 itemTouchHelper.startDrag(holder)
+        }
+
+        holder.itemView.onClick {
+            viewModel.onClickImage(holder.binding.item, position)
         }
     }
 

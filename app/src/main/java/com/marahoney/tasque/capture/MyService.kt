@@ -86,7 +86,6 @@ class MyService : Service() {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
                 val topPackageName: String = getTopPackageName()
-                Log.e("asdf", "onSwipeLeft  ${topPackageName}")
                 if (topPackageName == "com.android.chrome" || topPackageName == "com.sec.android.app.sbrowser")
                     fromWeb(topPackageName)
                 else

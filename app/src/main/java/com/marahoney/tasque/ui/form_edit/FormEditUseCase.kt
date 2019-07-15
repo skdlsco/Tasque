@@ -8,6 +8,7 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.marahoney.tasque.BuildConfig
 import com.marahoney.tasque.ui.category_select.CategorySelectActivity
+import com.marahoney.tasque.ui.dialog.DeleteDialog
 import com.marahoney.tasque.ui.main.MainActivity
 import com.marahoney.tasque.util.KeyboardUtil
 import org.jetbrains.anko.startActivityForResult
@@ -73,5 +74,11 @@ class FormEditUseCase(private val activity: AppCompatActivity,
     fun startCategorySelectActivity(categoryToken: String) {
         activity.startActivityForResult<CategorySelectActivity>(FormEditActivity.REQUEST_CODE_CATEGORY_SELECT,
                 CategorySelectActivity.KEY_SELECTED_CATEGORY to categoryToken)
+    }
+
+    fun showDeleteDialog(onDelete: () -> Unit){
+        DeleteDialog(activity).apply {
+            deleteListener = onDelete
+        }.show()
     }
 }
