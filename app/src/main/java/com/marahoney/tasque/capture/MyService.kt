@@ -76,6 +76,7 @@ class MyService : Service() {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
                 val topPackageName: String = getTopPackageName()
+                Log.e("asdf", "onSwipeLeft  ${topPackageName}")
                 if (topPackageName == "com.android.chrome" || topPackageName == "com.sec.android.app.sbrowser")
                     fromWeb(topPackageName)
                 else
@@ -95,6 +96,7 @@ class MyService : Service() {
     }
 
     fun fromWeb(packageName: String) {
+        Log.e("asdf", "fromWeb -> ${packageName}")
         val webUrl = pref.getString("web_url", "")!!
         Log.e("Asdf", "success ${webUrl}")
         screenCapture?.capture {

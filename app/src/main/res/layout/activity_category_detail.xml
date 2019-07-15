@@ -73,7 +73,6 @@
                     android:paddingEnd="18dp"
                     android:paddingBottom="@dimen/default_margin"
                     android:visibility="@{vm.forms.size == 0 ? View.INVISIBLE : View.VISIBLE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/categoryText"
                     app:listItem="@{vm.forms}"
                     app:viewModel="@{vm}"

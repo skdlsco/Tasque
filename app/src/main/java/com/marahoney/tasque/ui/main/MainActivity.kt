@@ -1,6 +1,8 @@
 package com.marahoney.tasque.ui.main
 
 import android.Manifest
+import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
@@ -13,11 +15,13 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.marahoney.tasque.R
+import com.marahoney.tasque.capture.MyAccessibilityService
 import com.marahoney.tasque.capture.MyService
 import com.marahoney.tasque.capture.ScreenCapture
 import com.marahoney.tasque.databinding.ActivityMainBinding
@@ -90,6 +94,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1000)
+        }
+
+        if (!isAccessibilityServiceEnabled(this, MyAccessibilityService::class.java)) {
+            val intent = Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            startActivityForResult(intent, 0)
         }
 
         startActivityForResult((getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager).createScreenCaptureIntent(),
@@ -165,5 +174,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     companion object {
         const val REQUEST_OVERLAY_PERMISSION = 1000
+
+        fun isAccessibilityServiceEnabled(context: Context, service: Class<out AccessibilityService>): Boolean {
+            val am = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+            val enabledServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
+
+            for (enabledService in enabledServices) {
+                val enabledServiceInfo = enabledService.resolveInfo.serviceInfo
+                if (enabledServiceInfo.packageName == context.packageName && enabledServiceInfo.name == service.name)
+                    return true
+            }
+
+            return false
+        }
     }
 }
