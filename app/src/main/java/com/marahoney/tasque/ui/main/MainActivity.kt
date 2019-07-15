@@ -13,7 +13,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -93,6 +92,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     fun startCaptureService() {
         if (checkRunningService())
             return
+
         if (!hasUsageStatsPermission())
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
 
@@ -102,7 +102,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1000)
+            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE), 1000)
         }
 
         if (!isAccessibilityServiceEnabled(this, MyAccessibilityService::class.java)) {
@@ -118,7 +118,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         stopService(Intent(this, MyService::class.java))
     }
 
-    fun checkRunningService(): Boolean {
+    private fun checkRunningService(): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         manager.getRunningServices(Int.MAX_VALUE).forEach {
             if (MyService::class.java.name == it.service.className)
