@@ -2,6 +2,7 @@ package com.marahoney.tasque.data.local
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.marahoney.tasque.data.model.Category
 import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.util.ArrayListLiveData
@@ -13,6 +14,9 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
 
     private val gson = CustomGsonBuilder.getGsonBuilder()
 
+    private val showPref = context.getSharedPreferences("show", Context.MODE_PRIVATE)
+    private val showEdit = showPref.edit()
+
     private val formPref = context.getSharedPreferences("form", Context.MODE_PRIVATE)
     private val formEdit = formPref.edit()
 
@@ -21,9 +25,17 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
 
     private var _forms = ArrayListLiveData<Form>()
     private var _categories = ArrayListLiveData<Category>()
+    private var _isShow = MutableLiveData<Boolean>()
 
     override val forms: LiveData<ArrayList<Form>> get() = _forms
     override val categories: LiveData<ArrayList<Category>> get() = _categories
+    override val isShow: LiveData<Boolean> get() = _isShow
+
+    override fun changeIsShow(isShow: Boolean) {
+        showEdit.putBoolean("isShow", isShow)
+        showEdit.commit()
+        _isShow.value = isShow
+    }
 
     override fun insertForm(form: Form) {
         val json = gson.toJson(form)
@@ -47,7 +59,7 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
         formEdit.commit()
         _categories.value?.forEachIndexed { index, category ->
             if (category.forms.contains(form.token)) {
-               val new = category.apply {
+                val new = category.apply {
                     forms = ArrayList<String>(category.forms).apply { remove(form.token) }.toList()
                 }
                 updateCategory(new)
@@ -84,6 +96,7 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
     override fun loadData() {
         _forms.value = loadForm()
         _categories.value = loadCategory()
+        _isShow.value = showPref.getBoolean("isShow", true)
     }
 
     private fun loadForm(): ArrayList<Form> {

@@ -18,12 +18,15 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.Observer
 import com.marahoney.tasque.R
+import com.marahoney.tasque.data.local.DataRepository
 import com.marahoney.tasque.ui.splash.SplashActivity
 import com.marahoney.tasque.util.OnSwipeTouchListener
 import org.jetbrains.anko.backgroundResource
 import org.jetbrains.anko.displayMetrics
 import org.jetbrains.anko.sdk27.coroutines.onTouch
+import org.koin.android.ext.android.inject
 import java.io.File
 import java.util.*
 
@@ -35,16 +38,22 @@ class MyService : Service() {
     var screenCapture: ScreenCapture? = null
     val pref by lazy { getSharedPreferences("webInfo", Context.MODE_PRIVATE) }
 
+    val dataRepository by inject<DataRepository>()
+
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
 
+    val observer = ShowObserver()
+
     override fun onCreate() {
         super.onCreate()
         startForegroundService()
+        dataRepository.isShow.observeForever(observer)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
         screenCapture = ScreenCapture(this)
         val resultCode = intent?.getIntExtra("resultCode", 0) ?: 0
         val data = intent
@@ -70,6 +79,7 @@ class MyService : Service() {
             backgroundResource = R.drawable.overlay
         }
 
+        observer.view = view
         windowManager.addView(view, params)
 
         val swipeTouchListener = object : OnSwipeTouchListener(this@MyService) {
@@ -176,6 +186,18 @@ class MyService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        dataRepository.isShow.removeObserver(observer)
         stopForeground(true)
+    }
+
+    class ShowObserver : Observer<Boolean> {
+        var view: View? = null
+
+        override fun onChanged(t: Boolean?) {
+            if (t == null || view == null)
+                return
+
+            view?.visibility = if (t) View.VISIBLE else View.GONE
+        }
     }
 }

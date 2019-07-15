@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.marahoney.tasque.ui.f_category.CategoryFragment
 import com.marahoney.tasque.ui.f_form.FormFragment
+import com.marahoney.tasque.ui.f_setting.SettingFragment
 import com.marahoney.tasque.ui.f_share.ShareFragment
 
 class MainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -18,6 +19,7 @@ class MainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_
                 0 -> CategoryFragment.newInstance()
                 1 -> FormFragment.newInstance()
                 2 -> ShareFragment.newInstance()
+                3 -> SettingFragment.newInstance()
                 else -> CategoryFragment.newInstance()
             }
 
