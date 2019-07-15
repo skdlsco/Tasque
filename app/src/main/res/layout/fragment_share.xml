@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.marahoney.tasque.ui.f_share.ShareFragmentViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/shareTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/notosans_cjk_kr_black"
+                android:text="내가 공유한 목록"
+                android:textColor="@color/textBlack"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/shareSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/notosans_cjk_kr_medium"
+                android:textColor="@color/textGrey"
+                android:textSize="18sp"
+                android:visibility="@{vm.share.size == 0 ? View.GONE : View.VISIBLE}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/shareTitle"
+                tools:text="n개의 저장된 카테고리" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shareRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="@dimen/default_margin"
+                android:visibility="@{vm.share.size == 0 ? View.GONE : View.VISIBLE}"
+                app:layout_constraintTop_toBottomOf="@id/shareSubTitle"
+                app:listItem="@{vm.share}"
+                app:type="@{1}"
+                app:viewModel="@{vm}"
+                tools:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:fontFamily="@font/notosans_cjk_kr_medium"
+                android:text="공유한 목록이 없습니다."
+                android:textAlignment="center"
+                android:textColor="@color/textGrey"
+                android:textSize="16sp"
+                android:visibility="@{vm.share.size == 0 ? View.VISIBLE : View.INVISIBLE}"
+                app:layout_constraintBottom_toBottomOf="@id/shareSubTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sharedTitle" />
+
+
+            <TextView
+                android:id="@+id/sharedTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/notosans_cjk_kr_black"
+                android:text="공유받은 목록"
+                android:textColor="@color/textBlack"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shareRecyclerView"
+                app:layout_goneMarginTop="256dp" />
+
+            <TextView
+                android:id="@+id/sharedSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/notosans_cjk_kr_medium"
+                android:textColor="@color/textGrey"
+                android:textSize="18sp"
+                android:visibility="@{vm.shared.size == 0 ? View.INVISIBLE : View.VISIBLE}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/sharedTitle"
+                tools:text="n개의 저장된 카테고리" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/sharedRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="@dimen/default_margin"
+                android:visibility="@{vm.shared.size == 0 ? View.INVISIBLE : View.VISIBLE}"
+                app:layout_constraintTop_toBottomOf="@id/sharedSubTitle"
+                app:listItem="@{vm.share}"
+                app:type="@{0}"
+                app:viewModel="@{vm}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginBottom="100dp"
+                android:fontFamily="@font/notosans_cjk_kr_medium"
+                android:text="공유받은 목록이 없습니다."
+                android:textAlignment="center"
+                android:textColor="@color/textGrey"
+                android:textSize="16sp"
+                android:visibility="@{vm.shared.size == 0 ? View.VISIBLE : View.INVISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sharedTitle" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

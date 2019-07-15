@@ -10,6 +10,8 @@ import com.marahoney.tasque.ui.f_category.CategoryFragmentUseCase
 import com.marahoney.tasque.ui.f_category.CategoryFragmentViewModel
 import com.marahoney.tasque.ui.f_form.FormFragmentUseCase
 import com.marahoney.tasque.ui.f_form.FormFragmentViewModel
+import com.marahoney.tasque.ui.f_share.ShareFragmentUseCase
+import com.marahoney.tasque.ui.f_share.ShareFragmentViewModel
 import com.marahoney.tasque.ui.form_detail.FormDetailUseCase
 import com.marahoney.tasque.ui.form_detail.FormDetailViewModel
 import com.marahoney.tasque.ui.form_edit.FormEditUseCase
@@ -64,6 +66,10 @@ object ViewModelModules {
 
         viewModel { (useCase: SearchUseCase) ->
             SearchViewModel(useCase, get())
+        }
+
+        viewModel { (useCase: ShareFragmentUseCase) ->
+            ShareFragmentViewModel(useCase, get())
         }
     }
 }

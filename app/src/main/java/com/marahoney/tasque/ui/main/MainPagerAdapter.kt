@@ -5,10 +5,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.marahoney.tasque.ui.f_category.CategoryFragment
 import com.marahoney.tasque.ui.f_form.FormFragment
+import com.marahoney.tasque.ui.f_share.ShareFragment
 
 class MainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    val pageTitles = arrayOf("카테고리", "폼", "쉐어 폼", "설정")
+    val pageTitles = arrayOf("카테고리", "폼", "쉐어", "설정")
 
     override fun getPageTitle(position: Int): CharSequence = pageTitles[position]
 
@@ -16,6 +17,7 @@ class MainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_
             when (position) {
                 0 -> CategoryFragment.newInstance()
                 1 -> FormFragment.newInstance()
+                2 -> ShareFragment.newInstance()
                 else -> CategoryFragment.newInstance()
             }
 
