@@ -45,7 +45,7 @@ class SearchViewModel(private val useCase: SearchUseCase,
             if (it.data?.count { it is FormData.Image } == 0) {
                 result.add(it.screenshot)
             } else {
-                result.add((it.data?.filter { it is FormData.Image }?.first() as FormData.Image).image)
+                result.add((it.data?.first { it is FormData.Image } as FormData.Image).image)
             }
             if (result.size >= 4)
                 return@forEach
@@ -54,8 +54,10 @@ class SearchViewModel(private val useCase: SearchUseCase,
     }
 
     fun onClickForm(item: Category, position: Int) {
+        useCase.startCategoryDetail(item.token)
     }
 
     fun onClickForm(item: Form, position: Int) {
+        useCase.startFormDetail(item.token)
     }
 }

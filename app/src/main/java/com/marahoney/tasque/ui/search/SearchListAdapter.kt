@@ -33,7 +33,6 @@ class SearchListAdapter(private val viewModel: SearchViewModel) : ListAdapter<An
                 else -> FormViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_search_form, parent, false))
             }
 
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is FormViewHolder -> onBindFormViewHolder(holder, position)
