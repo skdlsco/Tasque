@@ -67,4 +67,12 @@ class CategoryDetailViewModel(private val useCase: CategoryDetailUseCase,
             })
         }
     }
+
+    fun onClickLink(form: Form) {
+        if (form.isWeb) {
+            useCase.startActivityWeb(form.link)
+        } else {
+            useCase.startActivityApp(form.capturedPackage)
+        }
+    }
 }

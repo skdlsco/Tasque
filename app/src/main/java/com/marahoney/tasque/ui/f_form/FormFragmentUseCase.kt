@@ -1,6 +1,8 @@
 package com.marahoney.tasque.ui.f_form
 
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.marahoney.tasque.ui.form_detail.FormDetailActivity
@@ -29,5 +31,20 @@ class FormFragmentUseCase(private val fragment: Fragment,
 
     fun notifyRecyclerView() {
         recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    fun startActivityWeb(link: String?) {
+        if (link == null)
+            return
+        val url = if (!link.startsWith("http://") && !link.startsWith("https://"))
+            "http://$link" else link
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        fragment.activity?.startActivity(browserIntent)
+    }
+
+    fun startActivityApp(capturedPackage: String) {
+        val pm = fragment.activity?.packageManager
+        val intent = pm?.getLaunchIntentForPackage(capturedPackage)
+        fragment.activity?.startActivity(intent ?: return)
     }
 }

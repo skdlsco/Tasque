@@ -23,6 +23,14 @@ class FormFragmentViewModel(private val useCase: FormFragmentUseCase,
         useCase.startFormDetailActivity(form.token)
     }
 
+    fun onClickLink(form: Form) {
+        if (form.isWeb) {
+            useCase.startActivityWeb(form.link)
+        } else {
+            useCase.startActivityApp(form.capturedPackage)
+        }
+    }
+
     fun getApplicationNameFromPackageName(packageName: String): String {
         return useCase.getApplicationNameFromPackageName(packageName)
     }

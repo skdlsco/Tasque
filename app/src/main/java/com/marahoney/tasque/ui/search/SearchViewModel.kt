@@ -53,11 +53,19 @@ class SearchViewModel(private val useCase: SearchUseCase,
         return result
     }
 
-    fun onClickBackButton(){
+    fun onClickLink(form: Form) {
+        if (form.isWeb) {
+            useCase.startActivityWeb(form.link)
+        } else {
+            useCase.startActivityApp(form.capturedPackage)
+        }
+    }
+
+    fun onClickBackButton() {
         useCase.finishActivity()
     }
 
-    fun onClickForm(item: Category, position: Int) {
+    fun onClickCategory(item: Category, position: Int) {
         useCase.startCategoryDetail(item.token)
     }
 

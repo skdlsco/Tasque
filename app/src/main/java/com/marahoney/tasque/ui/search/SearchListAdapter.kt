@@ -92,7 +92,7 @@ class SearchListAdapter(private val viewModel: SearchViewModel) : ListAdapter<An
         }
 
         holder.itemView.onClick {
-            viewModel.onClickForm(item, position)
+            viewModel.onClickCategory(item, position)
         }
     }
 

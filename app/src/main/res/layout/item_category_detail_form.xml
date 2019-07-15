@@ -164,6 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/notosans_cjk_kr_regular"
+                android:onClick="@{() -> vm.onClickLink(item)}"
                 android:singleLine="true"
                 android:text="@{item.isWeb ? item.link + ` 열기` : vm.getApplicationNameFromPackageName(item.capturedPackage) +` (으)로 열기`}"
                 android:textColor="@color/softBlue"

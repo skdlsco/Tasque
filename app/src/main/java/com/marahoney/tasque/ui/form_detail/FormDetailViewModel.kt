@@ -41,6 +41,16 @@ class FormDetailViewModel(private val useCase: FormDetailUseCase,
         useCase.startScreenShot(_form.value?.screenshot ?: return)
     }
 
+    fun onClickLink() {
+        if (form.value == null)
+            return
+        if (_form.value?.isWeb == true) {
+            useCase.startActivityWeb(_form.value!!.link)
+        } else {
+            useCase.startActivityApp(_form.value!!.capturedPackage)
+        }
+    }
+
     fun onOptionsItemSelected(item: MenuItem?) {
         when (item?.itemId) {
             R.id.share -> {

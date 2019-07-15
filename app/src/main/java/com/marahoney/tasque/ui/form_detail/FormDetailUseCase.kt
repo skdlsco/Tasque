@@ -2,6 +2,8 @@ package com.marahoney.tasque.ui.form_detail
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.marahoney.tasque.BuildConfig
@@ -9,6 +11,7 @@ import com.marahoney.tasque.ui.form_edit.FormEditActivity
 import com.marahoney.tasque.ui.menu_bottom_sheet.MenuBottomSheet
 import org.jetbrains.anko.startActivity
 import java.io.File
+
 
 class FormDetailUseCase(private val activity: AppCompatActivity) {
 
@@ -46,5 +49,20 @@ class FormDetailUseCase(private val activity: AppCompatActivity) {
     fun startEditActivity(token: String) {
         activity.startActivity<FormEditActivity>(FormEditActivity.KEY_FORM_TOKEN to token,
                 FormEditActivity.KEY_MODE to FormEditActivity.MODE_EDIT)
+    }
+
+    fun startActivityWeb(link: String?) {
+        if (link == null)
+            return
+        val url = if (!link.startsWith("http://") && !link.startsWith("https://"))
+            "http://$link" else link
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        activity.startActivity(browserIntent)
+    }
+
+    fun startActivityApp(capturedPackage: String) {
+        val pm = activity.packageManager
+        val intent = pm.getLaunchIntentForPackage(capturedPackage)
+        activity.startActivity(intent ?: return)
     }
 }

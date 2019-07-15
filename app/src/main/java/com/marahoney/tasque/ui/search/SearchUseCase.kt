@@ -1,6 +1,8 @@
 package com.marahoney.tasque.ui.search
 
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.marahoney.tasque.ui.category_detail.CategoryDetailActivity
@@ -34,5 +36,20 @@ class SearchUseCase(private val activity: AppCompatActivity,
 
     fun finishActivity() {
         activity.finish()
+    }
+
+    fun startActivityWeb(link: String?) {
+        if (link == null)
+            return
+        val url = if (!link.startsWith("http://") && !link.startsWith("https://"))
+            "http://$link" else link
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        activity.startActivity(browserIntent)
+    }
+
+    fun startActivityApp(capturedPackage: String) {
+        val pm = activity.packageManager
+        val intent = pm.getLaunchIntentForPackage(capturedPackage)
+        activity.startActivity(intent ?: return)
     }
 }
