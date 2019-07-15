@@ -37,7 +37,8 @@ class MyAccessibilityService : AccessibilityService() {
                     if (node.text.toString().contains("/")
                             || getHost(node.text.toString()) != getHost(sbrowserUrl)) {
                         sbrowserUrl = node.text.toString()
-                        saveUrl(sbrowserLastUrl)
+                        saveUrl(getHost(sbrowserUrl))
+
                     }
                 }
                 sbrowserLastUrl = node.text?.toString() ?: ""

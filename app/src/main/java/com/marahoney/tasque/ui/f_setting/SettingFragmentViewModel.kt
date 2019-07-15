@@ -10,5 +10,9 @@ class SettingFragmentViewModel(private val useCase: SettingFragmentUseCase,
 
     fun changeDisplayShow(isShow: Boolean) {
         dataRepository.changeIsShow(isShow)
+        if (isShow)
+            useCase.startService()
+        else
+            useCase.stopService()
     }
 }

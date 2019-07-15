@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.marahoney.tasque.R
 import com.marahoney.tasque.data.local.DataRepository
+import com.marahoney.tasque.data.model.Category
 import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.data.model.FormData
 import com.marahoney.tasque.ui.base.BaseViewModel
@@ -19,6 +20,7 @@ import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.MODE_CREATE
 import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.MODE_EDIT
 import com.marahoney.tasque.util.TokenUtil
 import java.util.*
+import kotlin.collections.ArrayList
 
 class FormEditViewModel(private val useCase: FormEditUseCase,
                         private val dataRepository: DataRepository) : BaseViewModel() {
@@ -137,9 +139,13 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
         useCase.startCategorySelectActivity(categoryToken)
     }
 
+    var inserted = false
+
     private fun insertForm() {
-        if (_title.value == null || _title.value!!.isBlank())
+        if (_title.value == null || _title.value!!.isBlank() || inserted)
             return
+
+        inserted = true
 
         val form = Form(
                 TokenUtil.newToken,
@@ -150,6 +156,18 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
                 _formDataArray.value!!.toList(),
                 link
         )
+
+        if (categoryToken.isNotBlank()) {
+            val category = dataRepository.categories.value?.find { it.token == categoryToken }
+            if (category != null) {
+                val newForms = ArrayList<String>(category.forms).apply {
+                    add(form.token)
+                }
+                val newCategory = Category(category.token, category.title, newForms, category.createAt)
+                dataRepository.updateCategory(newCategory)
+            }
+        }
+
         dataRepository.insertForm(form)
 
         useCase.startMainActivity()
@@ -162,6 +180,26 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
         val token = useCase.intent.getStringExtra(KEY_FORM_TOKEN)
         val oldForm = dataRepository.forms.value?.find { it.token == token } ?: return // TODO: 오류
         val newForm = Form(oldForm.token, _title.value!!, filePath, oldForm.createAt, oldForm.capturedPackage, _formDataArray.value, link)
+
+        val oldCategory = dataRepository.categories.value?.find { it.forms.contains(token) }
+        if (oldCategory != null) {
+            val newForms = ArrayList<String>(oldCategory.forms).apply {
+                remove(token)
+            }
+            val newCategory = Category(oldCategory.token, oldCategory.title, newForms, oldCategory.createAt)
+            dataRepository.updateCategory(newCategory)
+        }
+
+        if (categoryToken.isNotBlank()) {
+            val category = dataRepository.categories.value?.find { it.token == categoryToken }
+            if (category != null) {
+                val newForms = ArrayList<String>(category.forms).apply {
+                    add(token)
+                }
+                val newCategory = Category(category.token, category.title, newForms, category.createAt)
+                dataRepository.updateCategory(newCategory)
+            }
+        }
 
         dataRepository.updateForm(newForm)
         useCase.finishActivity()

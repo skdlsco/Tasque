@@ -3,6 +3,7 @@ package com.marahoney.tasque.ui.main
 import android.Manifest
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -84,6 +86,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         initViewPager()
         initTabLayout()
 
+        if (getSharedPreferences("show", Context.MODE_PRIVATE).getBoolean("isShow", true))
+            startCaptureService()
+    }
+
+    fun startCaptureService() {
+        if (checkRunningService())
+            return
         if (!hasUsageStatsPermission())
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
 
@@ -103,6 +112,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         startActivityForResult((getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager).createScreenCaptureIntent(),
                 ScreenCapture.REQUEST_MEDIA_PROJECTION)
+    }
+
+    fun stopCaptureService() {
+        stopService(Intent(this, MyService::class.java))
+    }
+
+    fun checkRunningService(): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        manager.getRunningServices(Int.MAX_VALUE).forEach {
+            if (MyService::class.java.name == it.service.className)
+                return true
+        }
+        return false
     }
 
     private fun hasUsageStatsPermission(): Boolean {

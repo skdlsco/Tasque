@@ -1,5 +1,6 @@
 package com.marahoney.tasque.ui.form_detail
 
+import android.util.Log
 import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,15 +28,13 @@ class FormDetailViewModel(private val useCase: FormDetailUseCase,
 
     private val formObserver = Observer<List<Form>> {
         _form.value = it.find { it.token == token }
-        _categoryTitle.value = dataRepository.categories.value?.find { it.forms.contains(_form.value?.token) }?.title
+        _categoryTitle.value = dataRepository.categories.value?.find { category -> category.forms.contains(_form.value?.token) }?.title
                 ?: "카테고리 지정 안됨"
     }
 
     init {
         dataRepository.forms.observeForever(formObserver)
         _applicationName.value = _form.value?.capturedPackage?.let { useCase.getApplicationNameFromPackageName(it) }
-        _categoryTitle.value = dataRepository.categories.value?.find { it.forms.contains(_form.value?.token) }?.title
-                ?: "카테고리 지정 안됨"
     }
 
     fun onClickGoScreenShot() {

@@ -38,7 +38,7 @@
                     android:layout_marginEnd="@dimen/default_margin"
                     android:fontFamily="@font/notosans_cjk_kr_medium"
                     android:singleLine="true"
-                    android:text="카테고리 지정 안됨"
+                    android:text="@{vm.categoryTitle}"
                     android:textColor="@color/textBlack"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
