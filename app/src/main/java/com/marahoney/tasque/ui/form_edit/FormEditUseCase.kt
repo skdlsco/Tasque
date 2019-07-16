@@ -10,6 +10,7 @@ import com.marahoney.tasque.BuildConfig
 import com.marahoney.tasque.ui.category_select.CategorySelectActivity
 import com.marahoney.tasque.ui.dialog.DeleteDialog
 import com.marahoney.tasque.ui.main.MainActivity
+import com.marahoney.tasque.ui.share_bottom_sheet.FormShareBottomSheet
 import com.marahoney.tasque.util.KeyboardUtil
 import org.jetbrains.anko.startActivityForResult
 import java.io.File
@@ -76,7 +77,7 @@ class FormEditUseCase(private val activity: AppCompatActivity,
                 CategorySelectActivity.KEY_SELECTED_CATEGORY to categoryToken)
     }
 
-    fun showDeleteDialog(onDelete: () -> Unit){
+    fun showDeleteDialog(onDelete: () -> Unit) {
         DeleteDialog(activity).apply {
             deleteListener = onDelete
         }.show()

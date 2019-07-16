@@ -12,7 +12,7 @@ class MyAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        val eventType = AccessibilityEvent.eventTypeToString(event!!.eventType)
+//        val eventType = AccessibilityEvent.eventTypeToString(event!!.eventType)
         when (event?.packageName) {
             "com.android.chrome" -> searchChromeUrl(event.source)
             "com.sec.android.app.sbrowser" -> searchSBrowserUrl(event.source)

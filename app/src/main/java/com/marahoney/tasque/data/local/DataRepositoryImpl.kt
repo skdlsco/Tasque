@@ -1,6 +1,7 @@
 package com.marahoney.tasque.data.local
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.marahoney.tasque.data.model.Category
@@ -14,6 +15,9 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
 
     private val gson = CustomGsonBuilder.getGsonBuilder()
 
+    private val userPref = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+    private val userEdit = userPref.edit()
+
     private val showPref = context.getSharedPreferences("show", Context.MODE_PRIVATE)
     private val showEdit = showPref.edit()
 
@@ -26,10 +30,17 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
     private var _forms = ArrayListLiveData<Form>()
     private var _categories = ArrayListLiveData<Category>()
     private var _isShow = MutableLiveData<Boolean>()
-
+    private var _userId = MutableLiveData<String>()
     override val forms: LiveData<ArrayList<Form>> get() = _forms
     override val categories: LiveData<ArrayList<Category>> get() = _categories
     override val isShow: LiveData<Boolean> get() = _isShow
+    override val userId: LiveData<String> get() = _userId
+
+    override fun saveUserId(userId: String) {
+        userEdit.putString("userId", userId)
+        userEdit.commit()
+        _userId.value = userId
+    }
 
     override fun changeIsShow(isShow: Boolean) {
         showEdit.putBoolean("isShow", isShow)
@@ -97,6 +108,7 @@ class DataRepositoryImpl(private val context: Context) : DataRepository {
         _forms.value = loadForm()
         _categories.value = loadCategory()
         _isShow.value = showPref.getBoolean("isShow", true)
+        _userId.value = userPref.getString("userId", null)
     }
 
     private fun loadForm(): ArrayList<Form> {

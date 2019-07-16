@@ -9,11 +9,13 @@ interface DataRepository {
     var isLoaded: Boolean
 
     val isShow: LiveData<Boolean>
+    val userId: LiveData<String>
 
     val forms: LiveData<ArrayList<Form>>
     val categories: LiveData<ArrayList<Category>>
 
     fun changeIsShow(isShow: Boolean)
+    fun saveUserId(userId: String)
 
     fun insertForm(form: Form)
     fun updateForm(form: Form)

@@ -20,7 +20,11 @@ data class Form(
         @SerializedName("data")
         var data: List<FormData>? = listOf(),
         @SerializedName("link")
-        val link: String? = null) : Serializable {
+        val link: String? = null,
+        @SerializedName("share")
+        var share: Boolean = false,
+        @SerializedName("shareLink")
+        var shareLink: String = "") : Serializable {
 
     val isWeb: Boolean get() = link != null
 

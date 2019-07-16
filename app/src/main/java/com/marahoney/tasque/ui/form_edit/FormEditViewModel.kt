@@ -10,6 +10,7 @@ import com.marahoney.tasque.data.local.DataRepository
 import com.marahoney.tasque.data.model.Category
 import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.data.model.FormData
+import com.marahoney.tasque.data.remote.NetworkRepository
 import com.marahoney.tasque.ui.base.BaseViewModel
 import com.marahoney.tasque.ui.category_select.CategorySelectActivity
 import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.KEY_FILE_PATH
@@ -19,11 +20,14 @@ import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.KEY_PACKAGE_
 import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.MODE_CREATE
 import com.marahoney.tasque.ui.form_edit.FormEditActivity.Companion.MODE_EDIT
 import com.marahoney.tasque.util.TokenUtil
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import kotlin.collections.ArrayList
 
 class FormEditViewModel(private val useCase: FormEditUseCase,
-                        private val dataRepository: DataRepository) : BaseViewModel() {
+                        private val dataRepository: DataRepository,
+                        private val networkRepository: NetworkRepository) : BaseViewModel() {
 
     private val _applicationName = MutableLiveData<String>("")
     private val _formDataArray = MutableLiveData<ArrayList<FormData>>(arrayListOf())
@@ -167,6 +171,7 @@ class FormEditViewModel(private val useCase: FormEditUseCase,
                 dataRepository.updateCategory(newCategory)
             }
         }
+
 
         dataRepository.insertForm(form)
 

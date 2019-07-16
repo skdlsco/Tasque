@@ -31,7 +31,7 @@ object ViewModelModules {
 
     val viewModelModule = module {
         viewModel { (useCase: MainUseCase) ->
-            MainViewModel(useCase, get())
+            MainViewModel(useCase, get(), get())
         }
 
         viewModel { (useCase: SplashUseCase) ->
@@ -55,7 +55,7 @@ object ViewModelModules {
         }
 
         viewModel { (useCase: FormEditUseCase) ->
-            FormEditViewModel(useCase, get())
+            FormEditViewModel(useCase, get(), get())
         }
 
         viewModel { (useCase: FormFragmentUseCase) ->

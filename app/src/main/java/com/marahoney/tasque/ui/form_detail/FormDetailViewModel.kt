@@ -11,6 +11,7 @@ import com.marahoney.tasque.data.model.Form
 import com.marahoney.tasque.ui.base.BaseViewModel
 import com.marahoney.tasque.ui.form_detail.FormDetailActivity.Companion.KEY_FORM_TOKEN
 import com.marahoney.tasque.ui.menu_bottom_sheet.MenuBottomSheet
+import java.net.URL
 
 
 class FormDetailViewModel(private val useCase: FormDetailUseCase,
@@ -54,7 +55,11 @@ class FormDetailViewModel(private val useCase: FormDetailUseCase,
     fun onOptionsItemSelected(item: MenuItem?) {
         when (item?.itemId) {
             R.id.share -> {
-
+                useCase.showShareBottomSheet(form.value ?: return) {
+                    val url = URL(it.scheme, it.host, it.path).toString()
+                    _form.value?.shareLink = url
+                    dataRepository.updateForm(_form.value ?: return@showShareBottomSheet)
+                }
             }
             R.id.more -> {
                 useCase.showMenuBottomSheet(object : MenuBottomSheet.OnMenuClickListener {
