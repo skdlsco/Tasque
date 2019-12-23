@@ -58,7 +58,7 @@
                     android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginEnd="@dimen/default_margin"
                     android:fontFamily="@font/notosans_cjk_kr_medium"
-                    android:text="@{vm.category.forms.size + `개의 폼 포함`}"
+                    android:text="@{vm.category.forms.size + @string/include_string}"
                     android:textSize="12sp"
                     android:visibility="@{vm.forms.size == 0 ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintTop_toBottomOf="@id/categoryTitle"

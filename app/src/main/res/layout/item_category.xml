@@ -126,7 +126,7 @@
             android:layout_marginTop="26dp"
             android:fontFamily="@font/notosans_cjk_kr_regular"
             android:singleLine="true"
-            android:text="@{(item.forms != null ? item.forms.size() : 0) + `개의 폼 포함`}"
+            android:text="@{(item.forms != null ? item.forms.size() : 0) + @string/include_string}"
             android:textColor="@color/textGrey"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"

@@ -86,7 +86,7 @@
                     android:layout_marginEnd="@dimen/default_margin"
                     android:fontFamily="@font/notosans_cjk_kr_regular"
                     android:singleLine="true"
-                    android:text="@{vm.isWeb ? (vm.link + `에서 저장됨.`) : (vm.applicationName + `에서 저장됨.`)}"
+                    android:text="@{vm.isWeb ? (vm.link + @string/save_from_string) : (vm.applicationName + @string/save_from_string)}"
                     android:textColor="@color/softBlue"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="@id/badge"
@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/notosans_cjk_kr_medium"
-                        android:text="@{vm.applicationName + `에서 찍은 스크린샷 보러가기`}"
+                        android:text="@{vm.applicationName + @string/screenshot_string}"
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         tools:text="Facebook 에서 찍은 스크린샷 보러가기" />

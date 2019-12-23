@@ -44,7 +44,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="40dp"
                 android:fontFamily="@font/notosans_cjk_kr_medium"
-                android:text="@{vm.forms.size() + `개의 저장된 폼`}"
+                android:text="@{vm.forms.size() + @string/save_form_string}"
                 android:textColor="@color/textGrey"
                 android:textSize="18sp"
                 android:visibility="@{vm.forms.size == 0 ? View.INVISIBLE : View.VISIBLE}"

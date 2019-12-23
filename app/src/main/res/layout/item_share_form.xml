@@ -161,7 +161,7 @@
             android:layout_marginStart="8dp"
             android:fontFamily="@font/notosans_cjk_kr_regular"
             android:singleLine="true"
-            android:text="@{item.isWeb ? item.link + ` 열기` : vm.getApplicationNameFromPackageName(item.capturedPackage) +` (으)로 열기`}"
+            android:text="@{item.isWeb ? item.link + @string/open_string : vm.getApplicationNameFromPackageName(item.capturedPackage) + @string/open2_string}"
             android:textColor="@color/softBlue"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@id/badge"
